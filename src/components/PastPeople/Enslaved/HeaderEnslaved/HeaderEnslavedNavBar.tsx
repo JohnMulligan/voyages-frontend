@@ -28,8 +28,8 @@ import {
   BaseFilter,
   DataSetCollectionProps,
 } from '@/share/InterfactTypesDatasetCollection';
-import CanscandingMenu from '@/components/canscanding/CanscandingMenu';
-import CanscandingMenuEnslavedMobile from '@/components/canscanding/CanscandingMenuEnslavedMobile';
+import CascadingMenu from '@/components/cascading/CascadingMenu';
+import CascadingMenuEnslavedMobile from '@/components/cascading/CascadingMenuEnslavedMobile';
 import ButtonDropdownSelectorEnslaved from '../ColumnSelectorEnslavedTable/ButtonDropdownSelectorEnslaved';
 import {
   setBaseFilterPeopleEnslavedDataKey,
@@ -206,7 +206,7 @@ const HeaderEnslavedNavBar: React.FC = () => {
               )}
             </Typography>
           </Typography>
-          <CanscandingMenuEnslavedMobile />
+          <CascadingMenuEnslavedMobile />
           <Box
             className="menu-nav-bar-select-box"
             sx={{
@@ -239,7 +239,7 @@ const HeaderEnslavedNavBar: React.FC = () => {
           </Box>
         </Toolbar>
         <Hidden mdDown>
-          {currentEnslavedPage !== 1 && isFilter && <CanscandingMenu />}
+          {currentEnslavedPage !== 1 && isFilter && <CascadingMenu />}
         </Hidden>
         <Box component="nav">
           <Menu

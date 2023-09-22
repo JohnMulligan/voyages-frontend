@@ -6,11 +6,11 @@ import { Menu, Typography } from '@mui/material';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { ALLENSLAVERS, EnslaversTitle, PASTHOMEPAGE } from '@/share/CONST_DATA';
-import CanscandingMenu from '@/components/canscanding/CanscandingMenu';
+import CascadingMenu from '@/components/cascading/CascadingMenu';
 import { HeaderTitle } from '@/components/FunctionComponents/HeaderTitle';
 import { FilterButton } from '@/components/FunctionComponents/FilterButton';
 import ButtonDropdownSelectorEnslavers from '../ColumnSelectorEnslaversTable/ButtonDropdownSelectorEnslavers';
-import CanscandingMenuEnslaversMobile from '@/components/canscanding/CanscandingMenuEnslaversMobile';
+import CascadingMenuEnslaversMobile from '@/components/cascading/CascadingMenuEnslaversMobile';
 import '@/style/Nav.scss';
 import { resetAll } from '@/redux/resetAllSlice';
 import GlobalSearchButton from '@/components/FunctionComponents/GlobalSearchButton';
@@ -103,7 +103,7 @@ const HeaderEnslavedNavBar: React.FC = () => {
               )}
             </Typography>
           </Typography>
-          <CanscandingMenuEnslaversMobile />
+          <CascadingMenuEnslaversMobile />
           <Box
             className="menu-nav-bar-select-box"
             sx={{
@@ -121,7 +121,7 @@ const HeaderEnslavedNavBar: React.FC = () => {
           ></Box>
         </Toolbar>
         <Hidden mdDown>
-          {currentEnslaversPage !== 1 && isFilter && <CanscandingMenu />}
+          {currentEnslaversPage !== 1 && isFilter && <CascadingMenu />}
         </Hidden>
       </AppBar>
       <Menu

@@ -1,12 +1,10 @@
 # CRC-Voyages-React-App
 
-This is a sample React application for the CRC Voyages exercise. The application is built using Vite and React, TypeScript, Redux-toolkit, and Material-UI.
+This is the new frontend, standalone js app for the Voyages3 project
 
 [![](https://img.shields.io/badge/npm-v8.12.2-brightgreen)](https://shields.io) [![](https://img.shields.io/badge/node-v16.15.1-orange)](https://shields.io)
 
 Website Link: [OCI](https://voyages-staging.crc.rice.edu/)
-
-## The branch we except to deploy is: **production**
 
 ---
 
@@ -127,188 +125,19 @@ npm run dev
 npm run test
 ```
 
-### Code Structure
+-----
 
-```javscript
-  │── public/
-  │── src/
-  │   ├── assets
-  │   ├── components
-  │   │     ├── canscanding
-  │   │     │     ├── CanscandingMenu
-  │   │     │     ├── CanscandingMenuMobile
-  │   │     │     ├── Dropdown
-  │   │     │     ├── MenuListDropdown
-  │   │     │     ├── MenuListDropdownPeople.tsx
-  │   │     │     ├── NestedMenuItem
-  │   │     │     ├── PaperDraggable
-  │   │     ├── FunctionComponents
-  │   │     │     ├──  ColumnSelectorTable
-  │   │     │     │      ├── ButtonDropdownSelectoreColumn
-  │   │     │     │      ├── ColumnSelector
-  │   │     │     │      ├── DropdownColumn
-  │   │     │     │      ├── NestedMenuColumnItem
-  │   │     │     ├── AutocompletedTree
-  │   │     │     ├── CustomHeader
-  │   │     │     ├── TableCharacter
-  │   │     │     ├── TableRangeSlider
-  │   │     │── header
-  │   │     │     ├── drawerMenuBar
-  │   │     │     ├── HeaderNavar
-  │   │     │     ├── HeaderSearchLogo
-  │   │     │── Home
-  │   │     │     ├── stylesMenu
-  │   │     │     │      ├── StyledBurger
-  │   │     │     │      ├── SytledMenu
-  │   │     │     ├── BurgerMenu
-  │   │     │     ├── Menu
-  │   │     │     ├── MenuDropdownProps
-  │   │     │── PastPeople
-  │   │     │     ├── Enslaved
-  │   │     │     │      ├── ColumnSelectorEnslavedTable
-  |   │     │     │      │      ├── ButtonDropdownSelectorEnslaved
-  │   │     │     │      ├── HeaderEnslaved
-  |   │     │     │      │      ├── HeaderEnslavedNavBar
-  │   │     │     |      ├── EnslavedPage
-  │   │     │     |      ├── EnslavedPageScrolling
-  │   │     │     |      ├── EnslavedTable
-  │   │     │     ├── Enslaved
-  │   │     │     │      ├── ColumnSelectorEnslaversTable
-  |   │     │     │      │      ├── ButtonDropdownSelectorEnslavers
-  │   │     │     │      ├── HeaderEnslavers
-  |   │     │     │      │      ├── HeaderEnslaversNavBar
-  │   │     │     |      ├── EnslaversPage
-  │   │     │     |      ├── EnslaversPageScrolling
-  │   │     │     |      ├── EnslaversTable
-  │   │     │     ├── Header
-  │   │     │     │      ├── DrawerMenuPeopleBar
-  |   │     │     │      ├── NavBarPeople
-  │   │     │     ├── PastPeoplePage
-  │   │     │── voyagePage
-  │   │     │     ├── Results
-  │   │     │     │      ├── AggregationSumAverage
-  │   │     │     │      ├── AutocompletedBox
-  │   │     │     │      ├── BarGraph
-  │   │     │     │      ├── PieGraph
-  │   │     │     │      ├── RangeSlider
-  │   │     │     │      ├── Scatter
-  │   │     │     │      ├── SelectDropdown
-  │   │     │     │      ├── VoyagesHompPage
-  │   │     │     │      ├── VoyagesTable
-  │   │     │     ├── ScrollPage
-  │   │── fetchAPI
-  │   │     ├── pastEnslavedApi
-  │   │     │     ├── fetchEnslavedOptionsList
-  │   │     │     ├── fetchPastEnslavedApiService
-  │   │     │     ├── fetchPastEnslavedAutoCompleted
-  │   │     │     ├── fetchPastEnslavedRangeSliderData
-  │   │     │     ├── fetchVoyageSortedEnslavedTableData
-  │   │     ├── voyagesApi
-  │   │     │     ├── fetchApiService
-  │   │     │     ├── fetchAutoCompleted
-  │   │     │     ├── fetchOptionsData
-  │   │     │     ├── fetchOptionsFlat
-  │   │     │     ├── fetchRangeSliderData
-  │   │     │     ├── fetchVoyageGroupby
-  │   │     │     ├── fetchVoyageOptionsPagination
-  │   │     │     ├── fetchVoyagesOptionsApi
-  │   │     │     ├── fetchVoyageSortedData
-  │   │── pages
-  │   │     ├── Enslaved
-  │   │     ├── Enslavers
-  │   │     ├── Home
-  │   │     ├── PastPage
-  │   │     ├── VoyagesPage
-  │   │── redux
-  │   │     ├── getAutoCompleteSlice
-  │   │     ├── getColumnSlice
-  │   │     ├── getDataSetCollectionSlice
-  │   │     ├── getFilterPeopleObjectSlice
-  │   │     ├── getFilterSlice
-  │   │     ├── getOptionsDataPastPeopleEnslavedSlice
-  │   │     ├── getOptionsDataSlice
-  │   │     ├── getOptionsFlatObjSlice
-  │   │     ├── getPeopleEnlavedDataSetCollectionSlice
-  │   │     ├── getScrollEnlavedPageSlice
-  │   │     ├── getScrollPageSlice
-  │   │     ├── getTableSlice
-  │   │     ├── rangeSliderSlice
-  │   │     ├── store
-  │   │── share
-  │   │     ├── AUTH_BASEURL
-  │   │     ├── CONST_DATA
-  │   │     ├── InterfaceTypes
-  │   │     ├── InterfaceTypesTable
-  │   │     ├── InterfactTypesDatasetCollection
-  │   │     ├── PeopleCollectionType
-  │   │── style
-  │   │     ├── homepage.scss
-  │   │     ├── index.css
-  │   │     ├── Nav.scss
-  │   │     ├── page-past.scss
-  │   │     ├── page.scss
-  │   │     ├── Slider.scss
-  │   │     ├── table.scss
-  │   │── styleMUI
-  │   │     ├── index.ts
-  │   │     ├── thems.ts
-  │   │── tests
-  │   │     ├── components
-  │   │     ├── flat-files
-  │   │     │     ├── BARGRAPH_OPTIONS.test.ts
-  │   │     │     ├── PIECHART_OPTIONS.test.ts
-  │   │     │     ├── SCATTER_OPTIONS.test.ts
-  │   │     │     ├── Table_Cell_Structure.test.ts
-  │   │     │     ├── transatlantic_voyages_filter_menu.test.ts
-  │   │     ├── redux-test
-  │   │     │     ├── getDataSetCollection.test.ts
-  │   │     ├── untils-test
-  │   │     │     ├── valueGetter.test.ts
-  │   │── utils
-  │   │     ├── flatfiles
-  │   │     │     ├── african_origins_filter_menu.json
-  │   │     │     ├── african_origins_table_cell_structure.json
-  │   │     │     ├── enslaved_filter_menu.json
-  │   │     │     ├── enslaved_options.json
-  │   │     │     ├── enslaved_table_cell_structure.json
-  │   │     │     ├── enslaver_options.json
-  │   │     │     ├── people_page_data.json
-  │   │     │     ├── texas_filter_menu.json
-  │   │     │     ├── texas_table_cell_structure.json
-  │   │     │     ├── transatlantic_voyages_filter_menu_SIMPLE.json
-  │   │     │     ├── transatlantic_voyages_filter_menu.json
-  │   │     │     ├── varnamechecker.py
-  │   │     │     ├── VOYAGE_BARGRAPH_OPTIONS.json
-  │   │     │     ├── VOYAGE_COLLECTIONS.json
-  │   │     │     ├── VOYAGE_PIECHART_OPTIONS.json
-  │   │     │     ├── VOYAGE_SCATTER_OPTIONS.json
-  │   │     │     ├── voyage_table_cell_structure__updated21June.json
-  │   │     ├── functions
-  │   │     │     ├── generateRowsData.ts
-  │   │     │     ├── getRowsPerPage.ts
-  │   │     │     ├── getColorStyle.ts
-  │   │     │     ├── hasValueGetter.ts
-  │   │     │     ├── TableCollectionsOptions.ts
-  │   │     │     ├── traverseData.ts
-  │   │── App.tsx
-  │   └── main.tsx
-  |── .env
-  |── eslintrc
-  |── .gitignore
-  |── .prettierrc
-  |── index.html
-  |── package.json
-  |── tsconfig.json
-  |── vite-env.d.ts
-  |── vite.config.js
+## Summary of Packages
 
-```
-
-## Features
-
-This application is a simple search engine for the CRC Voyages database. It allows users to search for voyages based on various criteria such as the ship name, captain's name, or embarkation port. The search results are displayed in a table that can be sorted by various columns.
-
-The application also includes a form for adding new voyages to the database, although this functionality is not yet fully implemented.
+* ![Components](./src/components/package.md)
+* SVAPIClient (CHANGE)
+* Pages
+* Redux
+* Share ?
+* Style
+* StyleMUI
+* Tests
+* Utils
 
 ## Building for Production
 
@@ -317,10 +146,6 @@ npm run build
 ```
 
 This will create an optimized build in the dist/ directory. The build artifacts can be deployed to a web server or hosting platform.
-
-## Conclusion
-
-This documentation provided an overview and guide to the application built using Vite, React, TypeScript, Redux Toolkit, and Material UI. It covered the project structure, key features
 
 ## License
 

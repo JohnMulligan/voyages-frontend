@@ -20,13 +20,13 @@ import {
   FilterMenu,
   RangeSliderState,
   TYPES,
-  VoyagaesFilterMenu,
   CurrentPageInitialState,
+  TYPESOFDATASETPEOPLE,
 } from '@/share/InterfaceTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { DropdownColumn } from '../FunctionComponents/ColumnSelectorTable/DropdownColumn';
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent, useEffect } from 'react';
 import {
   setIsChange,
   setKeyValue,
@@ -38,13 +38,14 @@ import RangeSlider from '../Voyages/Results/RangeSlider';
 import { setIsChangeAuto } from '@/redux/getAutoCompleteSlice';
 import { setIsFilter } from '@/redux/getFilterSlice';
 import AutocompleteBox from '../Voyages/Results/AutocompletedBox';
+import ENSLAVED_TABLE from '@/utils/flatfiles/enslaved_table_cell_structure.json';
+import AFRICANORIGINS_TABLE from '@/utils/flatfiles/african_origins_table_cell_structure.json';
+import TEXAS_TABLE from '@/utils/flatfiles/texas_table_cell_structure.json';
+import { ColumnSelectorTree } from '@/share/InterfaceTypesTable';
 import GeoTreeSelected from '../FunctionComponents/GeoTreeSelected';
 import { resetAll } from '@/redux/resetAllSlice';
 
-const CanscandingMenuVoyagesMobile = () => {
-  const menuOptionFlat: VoyagaesFilterMenu = useSelector(
-    (state: RootState) => state.optionFlatMenu.value
-  );
+const CascadingMenuEnslavedMobile = () => {
   const { currentPage } = useSelector(
     (state: RootState) => state.getScrollPage as CurrentPageInitialState
   );
@@ -65,6 +66,26 @@ const CanscandingMenuVoyagesMobile = () => {
   const [isClickMenu, setIsClickMenu] = useState<boolean>(false);
   const [label, setLabel] = useState<string>('');
   const [type, setType] = useState<string>('');
+  const [menuValueFilter, setMenuValueFilter] = useState<
+    ColumnSelectorTree[] | FilterMenu[]
+  >([]);
+
+  useEffect(() => {
+    const loadMenuValueCellStructure = async () => {
+      try {
+        if (styleNamePeople === TYPESOFDATASETPEOPLE.allEnslaved) {
+          setMenuValueFilter(ENSLAVED_TABLE.column_selector_tree);
+        } else if (styleNamePeople === TYPESOFDATASETPEOPLE.africanOrigins) {
+          setMenuValueFilter(AFRICANORIGINS_TABLE.column_selector_tree);
+        } else if (styleNamePeople === TYPESOFDATASETPEOPLE.texas) {
+          setMenuValueFilter(TEXAS_TABLE.column_selector_tree);
+        }
+      } catch (error) {
+        console.error('Failed to load table cell structure:', error);
+      }
+    };
+    loadMenuValueCellStructure();
+  }, [menuValueFilter]);
 
   const handleClickMenu = (
     event: MouseEvent<HTMLLIElement> | MouseEvent<HTMLDivElement>
@@ -143,37 +164,36 @@ const CanscandingMenuVoyagesMobile = () => {
   };
   return (
     <>
-      {currentPage !== 1 && (
-        <DropdownColumn
-          trigger={
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{
-                color: '#000000',
-                display: {
-                  xs: 'flex',
-                  sm: 'flex',
-                  md: 'none',
-                  paddingRight: 40,
-                },
-                cursor: 'pointer',
-                alignItems: 'center',
-                margin: '10px 0',
-                fontSize: 15,
-                fontWeight: 600,
-              }}
-            >
+      <DropdownColumn
+        trigger={
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{
+              display: {
+                xs: 'flex',
+                sm: 'flex',
+                md: 'none',
+                paddingRight: 40,
+              },
+              cursor: 'pointer',
+              alignItems: 'center',
+              margin: '10px 0',
+              fontSize: 15,
+              fontWeight: 600,
+            }}
+          >
+            {currentEnslavedPage !== 1 && (
               <span style={{ display: 'flex', alignItems: 'center' }}>
                 <FilterAltIcon style={{ color: '#000000' }} />
                 <div className="menu-nav-bar">Filter Search</div>
               </span>
-            </IconButton>
-          }
-          menu={renderMenuItems(menuOptionFlat)}
-        />
-      )}
+            )}
+          </IconButton>
+        }
+        menu={renderMenuItems(menuValueFilter)}
+      />
       <Dialog
         BackdropProps={{
           style: DialogModalStyle,
@@ -208,4 +228,4 @@ const CanscandingMenuVoyagesMobile = () => {
   );
 };
 
-export default CanscandingMenuVoyagesMobile;
+export default CascadingMenuEnslavedMobile;

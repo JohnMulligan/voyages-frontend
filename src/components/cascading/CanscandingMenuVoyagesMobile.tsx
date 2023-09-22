@@ -20,24 +20,33 @@ import {
   FilterMenu,
   RangeSliderState,
   TYPES,
+  VoyagaesFilterMenu,
   CurrentPageInitialState,
 } from '@/share/InterfaceTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { DropdownColumn } from '../FunctionComponents/ColumnSelectorTable/DropdownColumn';
 import { useState, MouseEvent } from 'react';
-import { setKeyValue, setRangeSliderValue } from '@/redux/rangeSliderSlice';
+import {
+  setIsChange,
+  setKeyValue,
+  setRangeSliderValue,
+} from '@/redux/rangeSliderSlice';
 import { setIsOpenDialogMobile } from '@/redux/getScrollPageSlice';
 import { PaperDraggable } from './PaperDraggable';
 import RangeSlider from '../Voyages/Results/RangeSlider';
+import { setIsChangeAuto } from '@/redux/getAutoCompleteSlice';
 import { setIsFilter } from '@/redux/getFilterSlice';
 import AutocompleteBox from '../Voyages/Results/AutocompletedBox';
 import GeoTreeSelected from '../FunctionComponents/GeoTreeSelected';
 import { resetAll } from '@/redux/resetAllSlice';
 
-const CanscandingMenuEnslaversMobile = () => {
-  const menuValueFilter = useSelector(
-    (state: RootState) => state.getFilterPeople.value.valueEnslavers
+const CascadingMenuVoyagesMobile = () => {
+  const menuOptionFlat: VoyagaesFilterMenu = useSelector(
+    (state: RootState) => state.optionFlatMenu.value
+  );
+  const { currentPage } = useSelector(
+    (state: RootState) => state.getScrollPage as CurrentPageInitialState
   );
   const { varName } = useSelector(
     (state: RootState) => state.rangeSlider as RangeSliderState
@@ -45,8 +54,11 @@ const CanscandingMenuEnslaversMobile = () => {
   const { isOpenDialogMobile } = useSelector(
     (state: RootState) => state.getScrollPage as CurrentPageInitialState
   );
-  const { currentEnslaversPage } = useSelector(
-    (state: RootState) => state.getScrollEnslaversPage
+  const { styleNamePeople } = useSelector(
+    (state: RootState) => state.getPeopleEnlavedDataSetCollection
+  );
+  const { currentEnslavedPage } = useSelector(
+    (state: RootState) => state.getScrollEnslavedPage
   );
 
   const dispatch: AppDispatch = useDispatch();
@@ -74,12 +86,20 @@ const CanscandingMenuEnslaversMobile = () => {
     setIsClickMenu(!isClickMenu);
     dispatch(setIsOpenDialogMobile(false));
     dispatch(setIsFilter(false));
+    if (currentPage !== 5) {
+      dispatch(setIsChange(!value));
+      dispatch(setIsChangeAuto(!value));
+    }
   };
   const handleResetDataDialog = (event: any) => {
     event.stopPropagation();
+    const value = event.cancelable;
     setIsClickMenu(!isClickMenu);
     dispatch(setIsOpenDialogMobile(false));
-
+    if (currentPage !== 5) {
+      dispatch(setIsChange(!value));
+      dispatch(setIsChangeAuto(!value));
+    }
     dispatch(resetAll());
     const keysToRemove = Object.keys(localStorage);
     keysToRemove.forEach((key) => {
@@ -123,38 +143,37 @@ const CanscandingMenuEnslaversMobile = () => {
   };
   return (
     <>
-      <DropdownColumn
-        trigger={
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{
-              display: {
-                xs: 'flex',
-                sm: 'flex',
-                md: 'none',
-                paddingRight: 40,
-              },
-              cursor: 'pointer',
-              alignItems: 'center',
-              margin: '10px 0',
-              fontSize: 15,
-              fontWeight: 600,
-            }}
-          >
-            {currentEnslaversPage !== 1 && (
+      {currentPage !== 1 && (
+        <DropdownColumn
+          trigger={
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{
+                color: '#000000',
+                display: {
+                  xs: 'flex',
+                  sm: 'flex',
+                  md: 'none',
+                  paddingRight: 40,
+                },
+                cursor: 'pointer',
+                alignItems: 'center',
+                margin: '10px 0',
+                fontSize: 15,
+                fontWeight: 600,
+              }}
+            >
               <span style={{ display: 'flex', alignItems: 'center' }}>
-                <FilterAltIcon style={{ color: '#ffffff' }} />
-                <div className="menu-nav-bar" style={{ color: '#ffffff' }}>
-                  Filter Search
-                </div>
+                <FilterAltIcon style={{ color: '#000000' }} />
+                <div className="menu-nav-bar">Filter Search</div>
               </span>
-            )}
-          </IconButton>
-        }
-        menu={renderMenuItems(menuValueFilter)}
-      />
+            </IconButton>
+          }
+          menu={renderMenuItems(menuOptionFlat)}
+        />
+      )}
       <Dialog
         BackdropProps={{
           style: DialogModalStyle,
@@ -189,4 +208,4 @@ const CanscandingMenuEnslaversMobile = () => {
   );
 };
 
-export default CanscandingMenuEnslaversMobile;
+export default CascadingMenuVoyagesMobile;

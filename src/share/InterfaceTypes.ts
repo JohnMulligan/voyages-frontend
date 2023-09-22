@@ -205,7 +205,7 @@ export interface NavProps {
     window?: () => Window;
 }
 
-export interface CanscandingMenuProps {
+export interface CascadingMenuProps {
     window?: () => Window;
 }
 

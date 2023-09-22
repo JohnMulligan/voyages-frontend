@@ -7,7 +7,7 @@ import { MenuListDropdownStyle } from '@/styleMUI';
 import { Menu, Typography } from '@mui/material';
 import { AppDispatch, RootState } from '@/redux/store';
 import { HeaderNavBarMenuProps } from '@/share/InterfaceTypes';
-import CanscandingMenu from '../canscanding/CanscandingMenu';
+import CascadingMenu from '../cascading/CascadingMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { CurrentPageInitialState } from '@/share/InterfaceTypes';
 import { ColumnSelector } from '../FunctionComponents/ColumnSelectorTable/ColumnSelector';
@@ -47,7 +47,7 @@ import {
   VOYAGESTEXASPAGE,
   VOYAGETILE,
 } from '@/share/CONST_DATA';
-import CanscandingMenuVoyagesMobile from '../canscanding/CanscandingMenuVoyagesMobile';
+import CascadingMenuVoyagesMobile from '../cascading/CascadingMenuVoyagesMobile';
 import '@/style/Nav.scss';
 import { resetAll } from '@/redux/resetAllSlice';
 import GlobalSearchButton from '../FunctionComponents/GlobalSearchButton';
@@ -193,7 +193,7 @@ export default function HeaderNavBarMenu(props: HeaderNavBarMenuProps) {
               )}
             </Typography>
           </Typography>
-          <CanscandingMenuVoyagesMobile />
+          <CascadingMenuVoyagesMobile />
           <Box
             className="menu-nav-bar-select-box"
             sx={{
@@ -229,7 +229,7 @@ export default function HeaderNavBarMenu(props: HeaderNavBarMenuProps) {
           </Box>
         </Toolbar>
         <Hidden mdDown>
-          {currentPage !== 1 && isFilter && <CanscandingMenu />}
+          {currentPage !== 1 && isFilter && <CascadingMenu />}
         </Hidden>
         <Box component="nav">
           <Menu
