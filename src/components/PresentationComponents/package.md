@@ -1,4 +1,4 @@
-# Components
+# Presentation Components
 
 "Presentation" components are where the user sees the results of the queries they have made. Our presentation components
 
