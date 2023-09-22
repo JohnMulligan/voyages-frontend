@@ -8,7 +8,7 @@ Our components are built on the factory model in order to enable editors to chan
 
 All components, in one way or another, interact with the Redux store. This allows, for instance, filter components (like the rangeslider) to update the search filter, which triggers the presentation components (like the table) to make a new query and show updated results. Below is a representation of this communication flow.
 
-![filtercomponentfactory](../../documentation_assets/filtercomponentfactory.svg)
+![filtercomponentfactory](../documentation_assets/filtercomponentfactory.svg)
 
 ## Special cases
 
