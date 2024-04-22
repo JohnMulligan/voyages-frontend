@@ -2,9 +2,9 @@
 	"cell_structure": [
 		{
 			"header_label": {
-				"en": "Names",
-				"es": "Names ES",
-				"pt": "Names PT"
+				"en": "Documented Name",
+				"es": "Documented Name ES",
+				"pt": "Documented Name PT"
 			},
 			"cell_type": "literal-concat",
 			"visible": true,
@@ -12,13 +12,32 @@
 			"order_by": [
 				"documented_name"
 			],
-			"colID": "enslaved_name",
+			"colID": "documented_name",
 			"cell_val": {
 				"fields": [
 					{
 						"var_name": "documented_name",
 						"cell_fn": "literal"
-					},
+					}
+				],
+				"join": " / "
+			}
+		},
+		{
+			"header_label": {
+				"en": "Modern Name",
+				"es": "Modern Name ES",
+				"pt": "Modern Name PT"
+			},
+			"cell_type": "literal-concat",
+			"visible": true,
+			"number_format": null,
+			"order_by": [
+				"documented_name"
+			],
+			"colID": "modern_name",
+			"cell_val": {
+				"fields": [
 					{
 						"var_name": "modern_name",
 						"cell_fn": "literal"
@@ -399,15 +418,24 @@
 			},
 			"children": [
 				{
-					"colID": "enslaved_name",
+					"colID": "documented_name",
 					"label": {
-						"en": "Names",
-						"es": "Names ES",
-						"pt": "Names PT"
+						"en": "Documented Name",
+						"es": "Documented Name ES",
+						"pt": "Documented Name PT"
+					}
+				},
+				{
+					"colID": "modern_name",
+					"label": {
+						"en": "Modern Name",
+						"es": "Modern Name ES",
+						"pt": "Modern Name PT"
 					}
 				}
 			]
 		},
+		
 		{
 			"label": {
 				"en": "Bio Data",
