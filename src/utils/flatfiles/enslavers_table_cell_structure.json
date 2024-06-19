@@ -112,9 +112,7 @@
 			"number_format": null,
 			"order_by": [
 				"aliases__enslaver_relations__relation__voyage__voyage_dates__imp_arrival_at_port_of_dis_sparsedate__year",
-				"aliases__enslaver_relations__relation__voyage__voyage_ship__ship_name",
-				"aliases__enslaver_relations__relation__voyage__voyage_itinerary__imp_principal_region_of_slave_purchase__name",
-				"aliases__enslaver_relations__relation__voyage__voyage_itinerary__imp_principal_port_slave_dis__name"
+				"aliases__enslaver_relations__relation__voyage__voyage_ship__ship_name"
 			],
 			"col_width_px": 350,
 			"colID": "voyages",
@@ -130,14 +128,6 @@
 					},
 					{
 						"var_name": "voyages__voyage_dates__imp_arrival_at_port_of_dis_sparsedate__year",
-						"cell_fn": "enslavers"
-					},
-					{
-						"var_name": "voyages__voyage_itinerary__imp_principal_region_of_slave_purchase__name",
-						"cell_fn": "enslavers"
-					},
-					{
-						"var_name": "voyages__voyage_itinerary__imp_principal_port_slave_dis__name",
 						"cell_fn": "enslavers"
 					}
 				],
