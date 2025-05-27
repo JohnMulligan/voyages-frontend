@@ -7,6 +7,6 @@ jobs:
       name: "Install & Build"
       resource_class: large 
       script:
-        - npm ci && npm i --force mirador@"^3.3.0" --no-save
         - export NODE_OPTIONS=--max_old_space_size=8192 
+        - npm ci && npm i --force mirador@"^3.3.0" --no-save
         - npm run build
