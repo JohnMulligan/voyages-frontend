@@ -16,7 +16,7 @@ import {
   MAXIMUM_ZOOM,
   MINIMUM_ZOOM,
   ZOOM_LEVEL_THRESHOLD,
-  mappingSpecialists
+  mappingSpecialists,
   PLACE,
   AFRICANORIGINS,
   ENSLAVEDNODE,
