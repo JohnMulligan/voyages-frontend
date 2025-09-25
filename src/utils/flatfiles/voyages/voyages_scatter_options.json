@@ -1,0 +1,236 @@
+{
+  "x_vars": [
+    {
+      "var_name": "voyage_dates__imp_arrival_at_port_of_dis_sparsedate__year",
+      "label": {
+        "en": "Year arrived with captives (IMP)",
+        "es": "Year arrived with captives (IMP)",
+        "pt": "Year arrived with captives (IMP)"
+      }
+    },
+    {
+      "var_name": "voyage_dates__imp_length_home_to_disembark",
+      "label": {
+        "en": "Voyage length, home port to captives landing (days)",
+        "es": "Voyage length, home port to captives landing (days)",
+        "pt": "Voyage length, home port to captives landing (days)"
+      }
+    },
+    {
+      "var_name": "voyage_dates__length_middle_passage_days",
+      "label": {
+        "en": "Middle passage (days)",
+        "es": "Middle passage (days)",
+        "pt": "Middle passage (days)"
+      }
+    },
+	{
+      "var_name": "voyage_crew__crew_voyage_outset",
+      "label": {
+        "en": "Crew at voyage outset",
+        "es": "Crew at voyage outset",
+        "pt": "Crew at voyage outset"
+      }
+    },
+    {
+      "var_name": "voyage_crew__crew_first_landing",
+      "label": {
+        "en": "Crew at first landing of slaves",
+        "es": "ES: Crew at first landing of slaves",
+        "pt": "PT: Crew at first landing of slaves"
+      }
+    },
+    {
+      "var_name": "voyage_slaves_numbers__imp_total_num_slaves_embarked",
+      "label": {
+        "en": "Captives embarked (IMP)",
+        "es": "Captives embarked (IMP)",
+        "pt": "Captives embarked (IMP)"
+      }
+    },
+    {
+      "var_name": "voyage_slaves_numbers__imp_total_num_slaves_disembarked",
+      "label": {
+        "en": "Captives disembarked (IMP)",
+        "es": "Captives disembarked (IMP)",
+        "pt": "Captives disembarked (IMP)"
+      }
+    }
+  ],
+  "y_vars": [
+    {
+      "var_name": "voyage_id",
+      "label": {
+        "en": "Number of voyages",
+        "es": "Number of voyages",
+        "pt": "Number of voyages"
+      },
+      "agg_fn": "count"
+    },
+    {
+      "var_name": "voyage_dates__length_middle_passage_days",
+      "label": {
+        "en": "Average middle passage (days)",
+        "es": "Average middle passage (days)",
+        "pt": "Average middle passage (days)"
+      },
+      "agg_fn": "mean"
+    },
+    {
+      "var_name": "voyage_ship__tonnage_mod",
+      "type": "DecimalField",
+      "label": {
+        "en": "Average standardized tonnage (IMP)",
+        "es": "Average standardized tonnage (IMP)",
+        "pt": "Average standardized tonnage (IMP)"
+      },
+      "agg_fn": "mean"
+    },
+	{
+      "var_name": "voyage_crew__crew_voyage_outset",
+      "label": {
+        "en": "Average crew at voyage outset",
+        "es": "Average crew at voyage outset",
+        "pt": "Average crew at voyage outset"
+      },
+      "agg_fn":"mean"
+    },
+    {
+      "var_name": "voyage_crew__crew_first_landing",
+      "label": {
+        "en": "Average crew at first landing of captives",
+        "es": "Average crew at first landing of captives",
+        "pt": "Average crew at first landing of captives"
+      },
+      "agg_fn": "mean"
+    },
+    {
+      "var_name": "voyage_crew__crew_voyage_outset",
+      "label": {
+        "en": "Total crew at voyage outset",
+        "es": "Total crew at voyage outset",
+        "pt": "Total crew at voyage outset"
+      },
+      "agg_fn": "sum"
+    },
+    {
+      "var_name": "voyage_crew__crew_first_landing",
+      "label": {
+        "en": "Total crew at first landing of captives",
+        "es": "Total crew at first landing of captives",
+        "pt": "Total crew at first landing of captives"
+      },
+      "agg_fn": "sum"
+    },
+    {
+      "var_name": "voyage_slaves_numbers__imp_total_num_slaves_embarked",
+      "label": {
+        "en": "Total number of captives embarked (IMP)",
+        "es": "Total number of captives embarked (IMP)",
+        "pt": "Total number of captives embarked (IMP)"
+      },
+      "agg_fn": "sum"
+    },
+    {
+      "var_name": "voyage_slaves_numbers__imp_total_num_slaves_disembarked",
+      "label": {
+        "en": "Total number of captives disembarked (IMP)",
+        "es": "Total number of captives disembarked (IMP)",
+        "pt": "Total number of captives disembarked (IMP)"
+      },
+      "agg_fn": "sum"
+    },
+    {
+      "var_name": "voyage_slaves_numbers__imp_total_num_slaves_embarked",
+      "label": {
+        "en": "Average number of captives embarked (IMP)",
+        "es": "Average number of captives embarked (IMP)",
+        "pt": "Average number of captives embarked (IMP)"
+      },
+      "agg_fn": "mean"
+    },
+    {
+      "var_name": "voyage_slaves_numbers__imp_total_num_slaves_disembarked",
+      "label": {
+        "en": "Average number of captives disembarked (IMP)",
+        "es": "Average number of captives disembarked (IMP)",
+        "pt": "Average number of captives disembarked (IMP)"
+      },
+      "agg_fn": "mean"
+    },
+    
+    
+    {
+      "var_name": "voyage_slaves_numbers__percentage_men",
+      "label": {
+        "en": "Percent men",
+        "es": "Percent men",
+        "pt": "Percent men"
+      },
+      "agg_fn": "mean"
+    },
+    {
+      "var_name": "voyage_slaves_numbers__percentage_women",
+      "label": {
+        "en": "Percent women",
+        "es": "Percent women",
+        "pt": "Percent women"
+      },
+      "agg_fn": "mean"
+    },
+    {
+      "var_name": "voyage_slaves_numbers__percentage_boy",
+      "label": {
+        "en": "Percent boys",
+        "es": "Percent boys",
+        "pt": "Percent boys"
+      },
+      "agg_fn": "mean"
+    },
+    {
+      "var_name": "voyage_slaves_numbers__percentage_girl",
+      "label": {
+        "en": "Percent girls",
+        "es": "Percent girls",
+        "pt": "Percent girls"
+      },
+      "agg_fn": "mean"
+    },
+    {
+      "var_name": "voyage_slaves_numbers__percentage_child",
+      "label": {
+        "en": "Percent children",
+        "es": "Percent children",
+        "pt": "Percent children"
+      },
+      "agg_fn": "mean"
+    },
+    {
+      "var_name": "voyage_slaves_numbers__percentage_male",
+      "label": {
+        "en": "Percent male",
+        "es": "Percent male",
+        "pt": "Percent male"
+      },
+      "agg_fn": "mean"
+    },
+    {
+      "var_name": "voyage_slaves_numbers__imp_jamaican_cash_price",
+      "label": {
+        "en": "Sterling cash price in Jamaica",
+        "es": "Sterling cash price in Jamaica",
+        "pt": "Sterling cash price in Jamaica"
+      },
+      "agg_fn": "mean"
+    },
+    {
+      "var_name": "voyage_slaves_numbers__imp_mortality_ratio",
+      "label": {
+        "en": "Percent of captives embarked who died during voyage",
+        "es": "Percent of captives embarked who died during voyage",
+        "pt": "Percent of captives embarked who died during voyage"
+      },
+      "agg_fn": "mean"
+    }
+  ]
+}

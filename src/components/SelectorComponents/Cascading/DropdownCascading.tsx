@@ -4,14 +4,12 @@ import {
   MouseEvent,
   useState,
   useRef,
-  ReactNode,
-  createElement,
-  Children,
   cloneElement,
   useEffect,
 } from 'react';
-import Menu from '@mui/material/Menu';
-import { List } from '@mui/material';
+
+import { Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 
 interface DropdownProps {
   trigger: ReactElement;
@@ -24,96 +22,179 @@ interface DropdownProps {
 export const DropdownCascading = forwardRef<HTMLDivElement, DropdownProps>(
   (
     { trigger, menu, isOpen: controlledIsOpen, onOpen: onControlledOpen },
-    ref
+    ref,
   ) => {
-    const [isInternalOpen, setInternalOpen] = useState<HTMLElement | null>(
-      null
-    );
+    const [isInternalOpen, setInternalOpen] = useState<boolean>(false);
 
-    const isOpen = controlledIsOpen || isInternalOpen !== null;
+    const isOpen = controlledIsOpen || isInternalOpen;
     const anchorRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-      const handleClose = (event: any) => {
-        event.stopPropagation();
-
+      const handleGlobalClick = (event: MouseEvent) => {
+        // Only close if clicking outside the dropdown
         if (
           anchorRef.current &&
-          anchorRef.current.contains(event.target as Node)
+          !anchorRef.current.contains(event.target as Node)
         ) {
-          return;
+          handleForceClose();
         }
-        handleForceClose();
       };
 
-      document.addEventListener('click', handleClose);
+      // Use capture phase to ensure this runs before other handlers
+      document.addEventListener('click', handleGlobalClick as any, true);
 
       return () => {
-        document.removeEventListener('click', handleClose);
+        document.removeEventListener('click', handleGlobalClick as any, true);
       };
     }, []);
 
-    const handleOpen = (event: MouseEvent<HTMLDivElement, MouseEvent>) => {
-      event.stopPropagation();
-      if (menu?.length) {
-        onControlledOpen
-          ? onControlledOpen(event)
-          : setInternalOpen(event.currentTarget);
+    const handleOpenChange = (open: boolean) => {
+      if (onControlledOpen) {
+        onControlledOpen(open ? ({} as any) : null);
+      } else {
+        setInternalOpen(open);
       }
-    };
-
-    const handleClose = () => {
-      handleForceClose();
     };
 
     const handleForceClose = () => {
-      onControlledOpen ? onControlledOpen(null) : setInternalOpen(null);
+      if (onControlledOpen) {
+        onControlledOpen(null);
+      } else {
+        setInternalOpen(false);
+      }
     };
 
-    const renderMenu = (menuItem: ReactElement, index: number): ReactNode => {
-      const { parentMenuOpen, ...props } = menuItem.props;
-      let extraProps = {};
-      if (props.menu) {
-        extraProps = {
-          parentMenuOpen: isOpen,
-        };
-      }
+    // Function that menu items can call to close the dropdown
+    const closeMenu = () => {
+      setTimeout(() => handleForceClose(), 100);
+    };
 
-      const allowedComponents = ['li', 'yourCustomComponentType', 'otherCustomComponentType'];
+    const convertToAntdMenuItems = (
+      menuItems?: (ReactElement | any)[],
+      parentKey: string = '',
+    ): MenuProps['items'] => {
+      if (!menuItems) return [];
 
-      const filteredProps = {
-        ...props,
-        ...(allowedComponents.includes(String(menuItem.type)) ? extraProps : {}),
-      };
+      return menuItems.map((menuItem, index) => {
+        // Check if it's a React element or a plain object
+        const isReactElement = menuItem.props !== undefined;
 
-      return createElement(menuItem.type, {
-        ...filteredProps,
-        key: index,
-        children: props.menu
-          ? Children.map(props.menu, (child, i) => renderMenu(child, i))
-          : props.children,
+        if (isReactElement) {
+          // Handle React elements (your existing logic)
+          const {
+            onClick,
+            children,
+            menu: submenu,
+            key,
+            ...safeProps
+          } = menuItem.props;
+
+          const compositeKey = key || `${parentKey}-${index}`;
+
+          const handleItemClick = (e: any) => {
+            const mouseEvent = {
+              currentTarget: e.domEvent?.currentTarget || {},
+              stopPropagation: () => e.domEvent?.stopPropagation?.(),
+              preventDefault: () => e.domEvent?.preventDefault?.(),
+              ...safeProps,
+            };
+
+            if (onClick) {
+              onClick(mouseEvent);
+            }
+
+            if (!submenu) {
+              closeMenu();
+            }
+          };
+
+          const menuItemConfig: any = {
+            key: compositeKey,
+            label: children,
+            onClick: handleItemClick,
+            ...safeProps,
+          };
+
+          if (submenu && Array.isArray(submenu)) {
+            menuItemConfig.children = convertToAntdMenuItems(
+              submenu,
+              compositeKey,
+            );
+          }
+
+          return menuItemConfig;
+        } else {
+          // Handle plain objects (from renderDropdownMenu)
+          const { key, label, children, onClick, ...otherProps } = menuItem;
+          const compositeKey = key || `${parentKey}-${index}`;
+
+          const handleItemClick = (e: any) => {
+            if (onClick) {
+              const mouseEvent = {
+                currentTarget: e.domEvent?.currentTarget || {},
+                stopPropagation: () => e.domEvent?.stopPropagation?.(),
+                preventDefault: () => e.domEvent?.preventDefault?.(),
+                ...otherProps,
+              };
+              onClick(mouseEvent);
+            }
+
+            if (!children) {
+              closeMenu();
+            }
+          };
+
+          const menuItemConfig: any = {
+            key: compositeKey,
+            label,
+            onClick: handleItemClick,
+            ...otherProps,
+          };
+
+          if (children && Array.isArray(children)) {
+            menuItemConfig.children = convertToAntdMenuItems(
+              children,
+              compositeKey,
+            );
+          }
+
+          return menuItemConfig;
+        }
       });
     };
 
-
-
+    const menuConfig: MenuProps = {
+      items: convertToAntdMenuItems(menu),
+    };
 
     return (
       <div ref={ref}>
-        {cloneElement(trigger, {
-          onClick: handleOpen,
-          ref: anchorRef,
-        })}
-
-        <Menu
-          anchorEl={isOpen ? anchorRef.current : null}
+        <style>{`
+        .ant-dropdown-menu-submenu-arrow {
+          display: none !important;
+        }
+        .ant-dropdown-menu-item:hover {
+          background-color: #f5f5f5 !important;
+        }
+        .column-selector-tooltip .ant-tooltip-inner {
+          max-width: 300px;
+          text-align: left;
+        }
+      `}</style>
+        <Dropdown
+          menu={menuConfig}
+          trigger={['click']}
           open={isOpen}
-          onClose={handleClose}
-          disableScrollLock={true}
+          onOpenChange={handleOpenChange}
+          placement="bottomLeft"
         >
-          <List>{menu?.map(renderMenu)}</List>
-        </Menu>
+          {cloneElement(trigger, {
+            ref: anchorRef,
+          })}
+        </Dropdown>
       </div>
     );
-  }
+  },
 );
+
+DropdownCascading.displayName = 'DropdownCascading';

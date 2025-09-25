@@ -1,7 +1,8 @@
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { setIsFilter } from '@/redux/getFilterSlice';
 import { AppDispatch, RootState } from '@/redux/store';
-import { useDispatch, useSelector } from 'react-redux';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 export const FilterButton = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -11,13 +12,9 @@ export const FilterButton = () => {
   };
 
   return (
-    <span
-      style={{ cursor: 'pointer', display: 'flex' }}
-      onClick={handleClick}
-    >
+    <span style={{ cursor: 'pointer', display: 'flex' }} onClick={handleClick}>
       <FilterAltIcon style={{ color: '#fff' }} />
       <div className="menu-nav-bar"> Filter Search</div>
     </span>
-
   );
 };

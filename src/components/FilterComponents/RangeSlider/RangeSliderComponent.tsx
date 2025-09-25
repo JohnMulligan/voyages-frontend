@@ -1,58 +1,77 @@
-import { useEffect, useState, ChangeEvent } from 'react';
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useCallback, useEffect, useMemo, FunctionComponent } from 'react';
+
+import { Grid ,  Input} from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
+
+import { fetchPastEnslavedRangeSliderData } from '@/fetch/pastEnslavedFetch/fetchPastEnslavedRangeSliderData';
+import { fetchPastEnslaversRangeSliderData } from '@/fetch/pastEnslaversFetch/fetchPastEnslaversRangeSliderData';
+import { fetchRangeVoyageSliderData } from '@/fetch/voyagesFetch/fetchRangeSliderData';
+import { usePageRouter } from '@/hooks/usePageRouter';
+import { setFilterObject } from '@/redux/getFilterSlice';
 import {
   setRangeValue,
   setKeyValueName,
-  setIsChange,
-  setRangeSliderValue,
 } from '@/redux/getRangeSliderSlice';
-import { Grid } from '@mui/material';
-import { CustomSlider, Input } from '@/styleMUI';
 import { AppDispatch, RootState } from '@/redux/store';
+import { FILTER_OBJECT_KEY } from '@/share/CONST_DATA';
 import {
   Filter,
   FilterObjectsState,
   RangeSliderStateProps,
-  TYPESOFDATASET,
-  TYPESOFDATASETPEOPLE,
 } from '@/share/InterfaceTypes';
 import '@/style/Slider.scss';
-import { usePageRouter } from '@/hooks/usePageRouter';
-import { setFilterObject } from '@/redux/getFilterSlice';
+import {
+  checkPagesRouteForEnslaved,
+  checkPagesRouteForEnslavers,
+  checkPagesRouteForVoyages,
+} from '@/utils/functions/checkPagesRoute';
 import { filtersDataSend } from '@/utils/functions/filtersDataSend';
-import { checkPagesRouteForEnslaved, checkPagesRouteForEnslavers, checkPagesRouteForVoyages } from '@/utils/functions/checkPagesRoute';
-import { fetchRangeVoyageSliderData } from '@/fetch/voyagesFetch/fetchRangeSliderData';
-import { fetchPastEnslavedRangeSliderData } from '@/fetch/pastEnslavedFetch/fetchPastEnslavedRangeSliderData';
-import { fetchPastEnslaversRangeSliderData } from '@/fetch/pastEnslaversFetch/fetchPastEnslaversRangeSliderData';
-import { allEnslavers } from '@/share/CONST_DATA';
-import { setIsViewButtonViewAllResetAll } from '@/redux/getShowFilterObjectSlice';
-
-const RangeSlider = () => {
+interface RangeSliderProps {
+  handleSliderChangeMouseUp: () => void
+  setCurrentSliderValue: React.Dispatch<React.SetStateAction<number | number[]>>
+  currentSliderValue: number | number[]
+  minRange: number
+  maxRange: number
+}
+const RangeSlider:FunctionComponent<RangeSliderProps> = ({
+  handleSliderChangeMouseUp,
+  setCurrentSliderValue,
+  currentSliderValue,
+  minRange:min,
+  maxRange:max
+}) => {
+// const RangeSlider= () => {
   const dispatch: AppDispatch = useDispatch();
-  const { styleName: styleNameRoute } = usePageRouter();
   const { styleName } = usePageRouter();
   const { filtersObj } = useSelector((state: RootState) => state.getFilter);
-  const { rangeValue, varName, rangeSliderMinMax, isChange } = useSelector((state: RootState) => state.rangeSlider as FilterObjectsState
+  const { rangeValue, varName, rangeSliderMinMax, } = useSelector(
+    (state: RootState) => state.rangeSlider as FilterObjectsState,
   );
-  const { labelVarName } = useSelector(
-    (state: RootState) => state.getShowFilterObject
+
+  const filters = useMemo(
+    () => filtersDataSend(filtersObj, styleName!),
+    [filtersObj, styleName],
   );
-  const rangeMinMax = rangeSliderMinMax?.[varName] || rangeValue?.[varName] || [0, 0.5];
-  const min = rangeValue?.[varName]?.[0] || 0;
-  const max = rangeValue?.[varName]?.[1] || 0;
-  const [currentSliderValue, setCurrentSliderValue] = useState<number | number[]>(rangeMinMax);
 
-  const filters = filtersDataSend(filtersObj, styleNameRoute!)
-  const newFilters = filters !== undefined && filters!.map(filter => {
-    const { label, title, ...filteredFilter } = filter;
-    return filteredFilter;
-  });
-  const dataSend: RangeSliderStateProps = {
-    varName: varName,
-    filter: newFilters || []
-  };
+  const newFilters = useMemo(() => {
+    return filters === undefined
+      ? undefined
+      : filters!.map((filter) => {
+        const { ...filteredFilter } = filter;
+        return filteredFilter;
+      });
+  }, [filters]);
 
-  const fetchRangeSliderData = async () => {
+  const dataSend: RangeSliderStateProps = useMemo(() => {
+    return {
+      varName: varName,
+      filter: newFilters || [],
+    };
+  }, [varName, newFilters]);
+
+  const fetchRangeSliderData = useCallback(async () => {
     try {
       let response;
       if (checkPagesRouteForVoyages(styleName!)) {
@@ -63,169 +82,115 @@ const RangeSlider = () => {
         response = await fetchPastEnslaversRangeSliderData(dataSend);
       }
       if (response) {
-
-        const { min, max, varName } = response
-        const initialValue: number[] = [
-          parseInt(min ?? 0),
-          parseInt(max ?? 0),
-        ];
-        dispatch(setKeyValueName(varName))
+        const { min, max, varName } = response;
+        const initialValue: number[] = [parseInt(min ?? 0), parseInt(max ?? 0)];
+        dispatch(setKeyValueName(varName));
         setCurrentSliderValue(initialValue);
         dispatch(
           setRangeValue({
             ...rangeSliderMinMax,
             [varName]: initialValue as number[],
-          })
+          }),
         );
         dispatch(
           setRangeValue({
             ...rangeValue,
             [varName]: initialValue as number[],
-          })
+          }),
         );
       }
     } catch (error) {
-      console.log(`Error can't fetch range slider data: ${error}`)
+      console.log(`Error can't fetch range slider data: ${error}`);
     }
-  }
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, styleName]);
 
   useEffect(() => {
-    fetchRangeSliderData()
-    const storedValue = localStorage.getItem('filterObject');
+    fetchRangeSliderData();
+    const storedValue = localStorage.getItem(FILTER_OBJECT_KEY);
     if (!storedValue) return;
 
     const parsedValue = JSON.parse(storedValue);
     const filter: Filter[] = parsedValue.filter;
-    const filterByVarName = filter?.length > 0 && filter.find((filterItem) => filterItem.varName === varName);
+    const filterByVarName =
+      filter?.length > 0 &&
+      filter.find((filterItem) => filterItem.varName === varName);
     if (!filterByVarName) return;
 
-    const rangSliderLocal: number[] = filterByVarName.searchTerm as number[]
+    const rangSliderLocal: number[] = filterByVarName.searchTerm as number[];
 
     const initialValue: number[] = rangSliderLocal;
     setCurrentSliderValue(initialValue);
     dispatch(setFilterObject(filter));
+  }, [varName, styleName, dispatch, fetchRangeSliderData,setCurrentSliderValue]);
 
-  }, [varName, styleName]);
-
-  const handleSliderChange = (event: Event, newValue: number | number[]) => {
-    setCurrentSliderValue(newValue);
-  };
-
-  const handleSliderChangeMouseUp = () => {
-    dispatch(setIsChange(true));
-    dispatch(
-      setRangeSliderValue({
-        ...rangeSliderMinMax,
-        [varName]: currentSliderValue as number[],
-      })
-    );
-    updatedSliderToLocalStrage(currentSliderValue as number[])
-  };
-
-  const handleInputChange = (
-    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    const { name, value } = event.target;
-
-    if (value) {
-      const updatedSliderValue = [...rangeMinMax];
-      updatedSliderValue[name === 'start' ? 0 : 1] = Number(value);
-      dispatch(setIsChange(!isChange));
-      dispatch(
-        setRangeSliderValue({
-          ...rangeSliderMinMax,
-          [varName]: updatedSliderValue,
-        })
-      );
-      updatedSliderToLocalStrage(updatedSliderValue)
-
-    }
-    else {
-      dispatch(
-        setRangeSliderValue({
-          ...rangeSliderMinMax,
-          [varName]: [],
-        })
-      );
-    }
-  };
-
-  function updatedSliderToLocalStrage(updateValue: number[]) {
-    const existingFilterObjectString = localStorage.getItem('filterObject');
-
-    let existingFilterObject: any = {};
-
-    if (existingFilterObjectString) {
-      existingFilterObject = JSON.parse(existingFilterObjectString);
-    }
-    const existingFilters: Filter[] = existingFilterObject.filter || [];
-    const existingFilterIndex = existingFilters.findIndex(filter => filter.varName === varName);
-
-    if (existingFilterIndex !== -1) {
-      existingFilters[existingFilterIndex].searchTerm = updateValue as number[]
-    } else {
-      const newFilter: Filter = {
-        varName: varName,
-        searchTerm: updateValue!,
-        op: 'btw',
-        label: labelVarName
-      };
-      existingFilters.push(newFilter);
-    }
-    const filterObjectUpdate = {
-      filter: existingFilters
-    };
-    const filterObjectString = JSON.stringify(filterObjectUpdate);
-    dispatch(setFilterObject(existingFilters));
-    localStorage.setItem('filterObject', filterObjectString);
-    if ((styleNameRoute === TYPESOFDATASET.allVoyages || styleNameRoute === TYPESOFDATASETPEOPLE.allEnslaved || styleNameRoute === allEnslavers) && existingFilters.length > 0) {
-      dispatch(setIsViewButtonViewAllResetAll(true))
-    } else if (existingFilters.length > 1) {
-      dispatch(setIsViewButtonViewAllResetAll(true))
-    }
-  }
 
   return (
-    <Grid className="autocomplete-modal-box">
-      <Input
-        color="secondary"
-        name="start"
-        value={rangeMinMax[0] !== undefined ? rangeMinMax[0] : 0}
-        size="small"
-        onChange={handleInputChange}
-        inputProps={{
-          step: max - min > 20 ? 10 : 1,
-          min: min,
-          max: max,
-          type: 'number',
-          'aria-labelledby': 'input-slider',
-          position: 'left',
+    <Grid
+      className="autocomplete-modal-box"
+      // style={{
+      //   width: 450,
+      //   marginTop: 10,
+      //   display: 'flex',
+      //   flexDirection: 'column',
+      //   gap: 12,
+      //   alignItems: 'center',
+      // }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          gap: 12,
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
-      />
-      <Input
-        value={rangeMinMax[1] !== undefined ? rangeMinMax[1] : 0}
-        size="small"
-        onChange={handleInputChange}
-        inputProps={{
-          step: max - min > 20 ? 10 : 1,
-          min: min,
-          max: max,
-          type: 'number',
-          'aria-labelledby': 'input-slider',
-          position: 'left',
-        }}
-      />
-      <CustomSlider
-        size="small"
-        min={min as number}
-        max={max as number}
-        value={rangeMinMax}
-        onChange={handleSliderChange}
-        onMouseUp={handleSliderChangeMouseUp}
-      />
+      >
+        <Input
+          color="secondary"
+          name="start"
+          value={Array.isArray(currentSliderValue) ? currentSliderValue[0] : 0}
+          size="small"
+          onChange={(e) => {
+            const value = Number(e.target.value);
+            setCurrentSliderValue((prev) => [
+              value,
+              Array.isArray(prev) ? prev[1] : 0,
+            ]);
+          }}
+          inputProps={{
+            step: max - min > 20 ? 10 : 1,
+            min: min,
+            max: max,
+            type: 'number',
+            'aria-labelledby': 'input-slider',
+            position: 'left',
+          }}
+        />
+        <Input
+          name="end"
+          value={Array.isArray(currentSliderValue) ? currentSliderValue[1] : 0}
+          size="small"
+          onChange={(e) => {
+            const value = Number(e.target.value);
+            setCurrentSliderValue((prev) => [
+              Array.isArray(prev) ? prev[0] : 0,
+              value,
+            ]);
+          }}
+          inputProps={{
+            step: max - min > 20 ? 10 : 1,
+            min: min,
+            max: max,
+            type: 'number',
+            'aria-labelledby': 'input-slider',
+            position: 'left',
+          }}
+        />
+      </div>
     </Grid>
   );
 };
 
 export default RangeSlider;
+

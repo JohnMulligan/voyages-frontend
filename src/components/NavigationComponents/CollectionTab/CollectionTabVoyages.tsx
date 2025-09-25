@@ -1,10 +1,21 @@
-import { Button, Hidden } from '@mui/material';
+import { Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { setPathNameVoyages } from '@/redux/getDataPathNameSlice';
+import { setFilterObject, setIsFilter } from '@/redux/getFilterSlice';
 import { setCurrentPage } from '@/redux/getScrollPageSlice';
 import { AppDispatch, RootState } from '@/redux/store';
-import { CurrentPageInitialState, Filter, LabelFilterMeneList, TYPESOFBLOCKVOYAGES } from '@/share/InterfaceTypes';
-
+import { ALLVOYAGES, FILTER_OBJECT_KEY } from '@/share/CONST_DATA';
+import {
+  CurrentPageInitialState,
+  Filter,
+  LabelFilterMeneList,
+  TYPESOFBLOCKVOYAGES,
+} from '@/share/InterfaceTypes';
 import '@/style/page.scss';
+import { BlockCollectionProps } from '@/share/InterfactTypesDatasetCollection';
+import { checkBlockCollectionNameForVoyages } from '@/utils/functions/checkBlockCollectionName';
 import {
   getColorBTNVoyageDatasetBackground,
   getColorBackground,
@@ -12,25 +23,20 @@ import {
   getColorTextCollection,
   getColorHoverBackgroundCollection,
 } from '@/utils/functions/getColorStyle';
-import { setFilterObject, setIsFilter } from '@/redux/getFilterSlice';
-import { setPathNameVoyages } from '@/redux/getDataPathNameSlice';
-import { ALLVOYAGES } from '@/share/CONST_DATA';
-import { useNavigate } from 'react-router-dom';
-import { BlockCollectionProps } from '@/share/InterfactTypesDatasetCollection';
-import { checkBlockCollectionNameForVoyages } from '@/utils/functions/checkBlockCollectionName';
 
 const CollectionTabVoyages = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const { styleName, blocks } = useSelector(
-    (state: RootState) => state.getDataSetCollection
+    (state: RootState) => state.getDataSetCollection,
   );
-  const { languageValue } = useSelector((state: RootState) => state.getLanguages);
+  const { languageValue } = useSelector(
+    (state: RootState) => state.getLanguages,
+  );
 
   const { currentPage, currentVoyageBlockName } = useSelector(
-    (state: RootState) => state.getScrollPage as CurrentPageInitialState
+    (state: RootState) => state.getScrollPage as CurrentPageInitialState,
   );
-  const { filtersObj } = useSelector((state: RootState) => state.getFilter);
 
   const handlePageNavigation = (page: number, blockName: string) => {
     dispatch(setCurrentPage(page));
@@ -39,30 +45,54 @@ const CollectionTabVoyages = () => {
     } else if (page === 5) {
       dispatch(setPathNameVoyages(ALLVOYAGES));
     }
-    if (checkBlockCollectionNameForVoyages(blockName) === TYPESOFBLOCKVOYAGES.voyagesEN) {
-      navigate(`#${TYPESOFBLOCKVOYAGES.voyagesEN.toLowerCase()}`)
-    } else if (checkBlockCollectionNameForVoyages(blockName) === TYPESOFBLOCKVOYAGES.summaryStatisticsEN) {
-      navigate(`#${TYPESOFBLOCKVOYAGES.summaryStatisticsEN.toLowerCase()}`)
-    } else if (checkBlockCollectionNameForVoyages(blockName) === TYPESOFBLOCKVOYAGES.lineEN) {
-      navigate(`#${TYPESOFBLOCKVOYAGES.lineEN.toLowerCase()}`)
-    } else if (checkBlockCollectionNameForVoyages(blockName) === TYPESOFBLOCKVOYAGES.barEN) {
-      navigate(`#${TYPESOFBLOCKVOYAGES.barEN.toLowerCase()}`)
-    } else if (checkBlockCollectionNameForVoyages(blockName) === TYPESOFBLOCKVOYAGES.pieEN) {
-      navigate(`#${TYPESOFBLOCKVOYAGES.pieEN.toLowerCase()}`)
-    } else if (checkBlockCollectionNameForVoyages(blockName) === TYPESOFBLOCKVOYAGES.tableEN) {
-      navigate(`#${TYPESOFBLOCKVOYAGES.tableEN.toLowerCase()}`)
-    } else if (checkBlockCollectionNameForVoyages(blockName) === TYPESOFBLOCKVOYAGES.mapEN) {
-      navigate(`#${TYPESOFBLOCKVOYAGES.mapEN.toLowerCase()}`)
-    } else if (checkBlockCollectionNameForVoyages(blockName) === TYPESOFBLOCKVOYAGES.timeLapseEN) {
-      navigate(`#${TYPESOFBLOCKVOYAGES.timeLapseEN.toLowerCase()}`)
+    if (
+      checkBlockCollectionNameForVoyages(blockName) ===
+      TYPESOFBLOCKVOYAGES.voyagesEN
+    ) {
+      navigate(`#${TYPESOFBLOCKVOYAGES.voyagesEN.toLowerCase()}`);
+    } else if (
+      checkBlockCollectionNameForVoyages(blockName) ===
+      TYPESOFBLOCKVOYAGES.summaryStatisticsEN
+    ) {
+      navigate(`#${TYPESOFBLOCKVOYAGES.summaryStatisticsEN.toLowerCase()}`);
+    } else if (
+      checkBlockCollectionNameForVoyages(blockName) ===
+      TYPESOFBLOCKVOYAGES.lineEN
+    ) {
+      navigate(`#${TYPESOFBLOCKVOYAGES.lineEN.toLowerCase()}`);
+    } else if (
+      checkBlockCollectionNameForVoyages(blockName) ===
+      TYPESOFBLOCKVOYAGES.barEN
+    ) {
+      navigate(`#${TYPESOFBLOCKVOYAGES.barEN.toLowerCase()}`);
+    } else if (
+      checkBlockCollectionNameForVoyages(blockName) ===
+      TYPESOFBLOCKVOYAGES.pieEN
+    ) {
+      navigate(`#${TYPESOFBLOCKVOYAGES.pieEN.toLowerCase()}`);
+    } else if (
+      checkBlockCollectionNameForVoyages(blockName) ===
+      TYPESOFBLOCKVOYAGES.tableEN
+    ) {
+      navigate(`#${TYPESOFBLOCKVOYAGES.tableEN.toLowerCase()}`);
+    } else if (
+      checkBlockCollectionNameForVoyages(blockName) ===
+      TYPESOFBLOCKVOYAGES.mapEN
+    ) {
+      navigate(`#${TYPESOFBLOCKVOYAGES.mapEN.toLowerCase()}`);
+    } else if (
+      checkBlockCollectionNameForVoyages(blockName) ===
+      TYPESOFBLOCKVOYAGES.timeLapseEN
+    ) {
+      navigate(`#${TYPESOFBLOCKVOYAGES.timeLapseEN.toLowerCase()}`);
     }
-    const storedValue = localStorage.getItem('filterObject');
+    const storedValue = localStorage.getItem(FILTER_OBJECT_KEY);
     if (!storedValue) return;
     const parsedValue = JSON.parse(storedValue);
     const filter: Filter[] = parsedValue.filter;
 
     const filterObjectUpdate = {
-      filter: filter
+      filter: filter,
     };
     dispatch(setFilterObject(filter));
     const filterObjectString = JSON.stringify(filterObjectUpdate);
@@ -70,48 +100,90 @@ const CollectionTabVoyages = () => {
   };
 
   return (
-    <Hidden>
-      <div className="navbar-wrapper">
-        <nav className="nav-button">
-
-          {blocks.map((items: BlockCollectionProps, index: number) => {
-            const { label: block } = items;
-            const blockName = (block as LabelFilterMeneList)[languageValue];
-            const newBlockName = blockName.toLowerCase().replace(/\s/g, '');
-            const buttonIndex = index + 1;
-            return (
-              <Button
-                key={`${newBlockName}-${buttonIndex}`}
-                onClick={() => handlePageNavigation(buttonIndex, newBlockName)}
-                className="nav-button-page"
-                sx={{
-                  margin: '5px',
-                  cursor: 'pointer',
-                  textTransform: 'unset',
-                  backgroundColor: getColorBackground(styleName),
-                  boxShadow: currentVoyageBlockName === checkBlockCollectionNameForVoyages(newBlockName.toLocaleLowerCase()) ? getColorBoxShadow(styleName) : '',
-                  color: currentVoyageBlockName === checkBlockCollectionNameForVoyages(newBlockName.toLocaleLowerCase()) ? 'white' : getColorTextCollection(styleName),
-                  fontWeight: currentVoyageBlockName === checkBlockCollectionNameForVoyages(newBlockName.toLocaleLowerCase()) ? 'bold' : 600,
-                  fontSize: '0.80rem',
-                  '&:hover': {
-                    backgroundColor: getColorHoverBackgroundCollection(styleName!),
-                    color: getColorBTNVoyageDatasetBackground(styleName)
-                  },
-                  '&:disabled': {
-                    color: '#fff',
-                    boxShadow: getColorBoxShadow(styleName!),
-                    cursor: 'not-allowed',
-                  },
-                }}
-                variant={currentPage === buttonIndex ? 'contained' : 'outlined'}
-              >
-                {blockName}
-              </Button>
+    <div
+      className="navbar-wrapper"
+      style={{ display: window.innerWidth < 768 ? 'none' : 'block' }}
+    >
+      <nav className="nav-button">
+        {blocks.map((items: BlockCollectionProps, index: number) => {
+          const { label: block } = items;
+          const blockName = (block as LabelFilterMeneList)[languageValue];
+          const newBlockName = blockName.toLowerCase().replace(/\s/g, '');
+          const buttonIndex = index + 1;
+          const isActive =
+            currentVoyageBlockName ===
+            checkBlockCollectionNameForVoyages(
+              newBlockName.toLocaleLowerCase(),
             );
-          })}
-        </nav>
-      </div>
-    </Hidden>
+          const isCurrentPage = currentPage === buttonIndex;
+
+          // Base button styles
+          const baseButtonStyle = {
+            margin: '5px',
+            cursor: 'pointer',
+            textTransform: 'unset' as const,
+            backgroundColor: getColorBackground(styleName),
+            boxShadow: isActive ? getColorBoxShadow(styleName) : 'none',
+            color: isActive ? 'white' : getColorTextCollection(styleName),
+            fontWeight: isActive ? 'bold' : 600,
+            fontSize: '0.80rem',
+            border: isCurrentPage
+              ? `2px solid ${getColorBackground(styleName)}`
+              : '1px solid transparent',
+          };
+
+          // Event handlers for hover effects
+          const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
+            const target = e.currentTarget;
+            target.style.backgroundColor = getColorHoverBackgroundCollection(
+              styleName!,
+            );
+            target.style.color = getColorBTNVoyageDatasetBackground(styleName);
+          };
+
+          const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
+            const target = e.currentTarget;
+            target.style.backgroundColor = getColorBackground(styleName);
+            target.style.color = isActive
+              ? 'white'
+              : getColorTextCollection(styleName);
+          };
+
+          const handleFocus = (e: React.FocusEvent<HTMLElement>) => {
+            const target = e.currentTarget;
+            target.style.backgroundColor = getColorHoverBackgroundCollection(
+              styleName!,
+            );
+            target.style.color = getColorBTNVoyageDatasetBackground(styleName);
+            target.style.outline = 'none';
+          };
+
+          const handleBlur = (e: React.FocusEvent<HTMLElement>) => {
+            const target = e.currentTarget;
+            target.style.backgroundColor = getColorBackground(styleName);
+            target.style.color = isActive
+              ? 'white'
+              : getColorTextCollection(styleName);
+          };
+
+          return (
+            <Button
+              key={`${newBlockName}-${buttonIndex}`}
+              onClick={() => handlePageNavigation(buttonIndex, newBlockName)}
+              className="nav-button-page"
+              type={isCurrentPage ? 'primary' : 'default'}
+              style={baseButtonStyle}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+            >
+              <div style={{ textAlign: 'center' }}>{blockName}</div>
+            </Button>
+          );
+        })}
+      </nav>
+    </div>
   );
 };
 

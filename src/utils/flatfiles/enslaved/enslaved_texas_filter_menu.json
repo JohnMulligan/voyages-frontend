@@ -1,0 +1,180 @@
+[
+  {
+    "label": {
+      "en": "Name",
+      "es": "Nombre",
+      "pt": "Nome"
+    },
+    "var_name": "documented_name",
+    "type": "CharField",
+    "ops": ["icontains"]
+  },
+  {
+    "label": {
+      "en": "Bio Data",
+      "es": "Datos Biográficos",
+      "pt": "Dados Biográficos"
+    },
+    "children": [
+      {
+        "var_name": "age",
+        "type": "IntegerField",
+        "label": {
+          "en": "Age",
+          "es": "Edad",
+          "pt": "Idade"
+        }
+      },
+      {
+        "var_name": "gender__name",
+        "type": "MultiselectList",
+        "label": {
+          "en": "Gender",
+          "es": "Género",
+          "pt": "Gênero"
+        }
+      },
+      {
+        "var_name": "height",
+        "type": "IntegerField",
+        "label": {
+          "en": "Height (inches)",
+          "es": "Altura (pulgadas)",
+          "pt": "Altura (polegadas)"
+        }
+      }
+    ]
+  },
+  {
+    "label": {
+      "en": "Enslavers",
+      "es": "Esclavizadores",
+      "pt": "Escravizadores"
+    },
+    "children": [
+      {
+        "var_name": "enslaved_relations__relation__relation_enslavers__enslaver_alias__alias",
+        "type": "CharField",
+        "ops": ["icontains"],
+        "label": {
+          "en": "Individual enslavers",
+          "es": "Esclavizadores individuales ",
+          "pt": "Escravizadores individuais"
+        }
+      }
+    ]
+  },
+  {
+    "label": {
+      "en": "Itinerary",
+      "es": "Itinerario",
+      "pt": "Itinerário"
+    },
+    "children": [
+      {
+        "var_name": "enslaved_relations__relation__voyage__voyage_id",
+        "type": "IdMatch",
+        "ops": ["exact", "btw"],
+        "label": {
+          "en": "Voyage ID",
+          "es": "ID da viagem",
+          "pt": "ID da viagem"
+        }
+      },
+      {
+        "var_name": "enslaved_relations__relation__voyage__voyage_ship__ship_name",
+        "type": "CharField",
+        "ops": ["icontains"],
+        "label": {
+          "en": "Ship name",
+          "es": "Nombre del barco",
+          "pt": "Nome do navio"
+        }
+      },
+      {
+        "var_name": "enslaved_relations__relation__voyage__voyage_itinerary__imp_principal_place_of_slave_purchase__value",
+        "type": "GeoTreeSelect",
+        "label": {
+          "en": "Place of embarkation",
+          "es": "Lugar de embarque",
+          "pt": "Local de embarque"
+        }
+      },
+      {
+        "var_name": "enslaved_relations__relation__voyage__voyage_itinerary__imp_principal_port_slave_dis__value",
+        "type": "GeoTreeSelect",
+        "label": {
+          "en": "Place of disembarkation",
+          "es": "Lugar de desembarque",
+          "pt": "Local de desembarque"
+        }
+      },
+      {
+        "var_name": "enslaved_relations__relation__voyage__voyage_dates__imp_arrival_at_port_of_dis_sparsedate__year",
+        "type": "IntegerField",
+        "label": {
+          "en": "Year of arrival",
+          "es": "Año de llegada ",
+          "pt": "Ano de chegada"
+        }
+      }
+    ]
+  },
+  {
+    "label": {
+      "en": "Fate",
+      "es": "Destino",
+      "pt": "Destino"
+    },
+    "children": [
+      {
+        "var_name": "captive_fate__name",
+        "type": "MultiselectList",
+        "ops": ["icontains"],
+        "label": {
+          "en": "Captive fate",
+          "es": "Destino del cautivo",
+          "pt": "Destino do cautivo"
+        }
+      },
+      {
+        "var_name": "post_disembark_location__name",
+        "type": "CharField",
+        "ops": ["icontains"],
+        "label": {
+          "en": "Post-disembark location",
+          "es": "Ubicación posterior al desembarco",
+          "pt": "Localização pós-desembarque"
+        } },
+        {
+          "var_name": "enslaved_relations__relation__voyage__voyage_outcome__particular_outcome__name",
+          "type": "MultiselectList",
+          "ops": ["icontains"],
+          "label": {
+            "en": "Vessel fate",
+            "es": "Destino de la embarcación ",
+            "pt": "Destino da embarcação"
+          }
+        }
+    ]
+  },
+  {
+    "label": {
+      "en": "Sources",
+      "es": "Fuentes",
+      "pt": "Fontes"
+    },
+    "children": [
+      {
+        "var_name": "enslaved__source__ALL",
+        "type": "CharField",
+        "ops": ["icontains"],
+        "label": {
+          "en": "Documentary sources",
+          "es": "Fuentes documentales",
+          "pt": "Fontes documentais"
+        }
+      }
+    ]
+  }
+]

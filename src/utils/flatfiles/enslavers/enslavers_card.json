@@ -1,0 +1,141 @@
+[
+  {
+    "label": {
+      "en": "Voyages",
+      "es": "ES: Voyages",
+      "pt": "PT: Voyages"
+    },
+    "children": [
+      {
+        "label": {
+          "en": "Voyage ID, Ship Name, and Year",
+          "es": "ES: Voyage ID, Ship Name, and Year",
+          "pt": "PT: Voyage ID, Ship Name, and Year"
+        },
+        "cell_type": "literal",
+        "number_format": null,
+        "cell_val": {
+          "fields": [
+            {
+              "var_name": "voyages",
+              "cell_fn": "literal"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "label": {
+      "en": "Personal Data",
+      "es": "ES: Personal Data",
+      "pt": "PT: Personal Data"
+    },
+    "children": [
+      {
+        "label": {
+          "en": "Name",
+          "es": "ES: Name",
+          "pt": "PT: Name"
+        },
+        "cell_type": "literal",
+        "number_format": null,
+        "cell_val": {
+          "fields": [
+            {
+              "var_name": "names",
+              "cell_fn": "literal"
+            }
+          ]
+        }
+      },
+      {
+        "label": {
+          "en": "Birth",
+          "es": "ES: Birth",
+          "pt": "PT: Birth"
+        },
+        "cell_type": "literal",
+        "number_format": null,
+        "cell_val": {
+          "fields": [
+            {
+              "var_name": "birth",
+              "cell_fn": "literal"
+            }
+          ]
+        }
+      },
+      {
+        "label": {
+          "en": "Death",
+          "es": "ES: Death",
+          "pt": "PT: Death"
+        },
+        "cell_type": "literal",
+        "number_format": null,
+        "cell_val": {
+          "fields": [
+            {
+              "var_name": "death",
+              "cell_fn": "literal"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "label": {
+      "en": "Enslavement Relations",
+      "es": "ES: Enslavement Relations",
+      "pt": "PT: Enslavement Relations"
+    },
+    "children": [
+      {
+        "label": {
+          "en": "Enslaved People",
+          "es": "ES: Enslaved People",
+          "pt": "PT: Enslaved People"
+        },
+        "cell_type": "literal",
+        "number_format": null,
+        "cell_val": {
+          "fields": [
+            {
+              "var_name": "named_enslaved_people__documented_name",
+              "cell_fn": "literal"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "label": {
+      "en": "Sources",
+      "es": "ES: Sources",
+      "pt": "PT: Sources"
+    },
+    "children": [
+      {
+        "label": {
+          "en": "Documentary Sources",
+          "es": "ES: Documentary Sources",
+          "pt": "PT: Documentary Sources"
+        },
+        "cell_type": "literal-concat",
+        "number_format": null,
+        "cell_val": {
+          "fields": [
+            {
+              "var_name": "sources__title",
+              "cell_fn": "literal"
+            }
+          ],
+          "join": ": "
+        }
+      }
+    ]
+  }
+]

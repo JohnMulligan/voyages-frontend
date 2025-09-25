@@ -1,7 +1,11 @@
 import { fetchBlogData } from '@/fetch/blogFetch/fetchBlogData';
 import { setBlogPost } from '@/redux/getBlogDataSlice';
 import { AppDispatch, RootState } from '@/redux/store';
-import { BlogDataPropsRequest, BlogFilter, InitialStateBlogProps } from '@/share/InterfaceTypesBlog';
+import {
+  BlogDataPropsRequest,
+  BlogFilter,
+  InitialStateBlogProps,
+} from '@/share/InterfaceTypesBlog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faWhatsapp,
@@ -9,13 +13,13 @@ import {
   faTwitterSquare,
   faLinkedin,
 } from '@fortawesome/free-brands-svg-icons';
+import defaultImage from '@/assets/voyage-blog.png';
 import { faSquareEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { BASEURL } from '@/share/AUTH_BASEURL';
 import { BLOGPAGE } from '@/share/CONST_DATA';
-import { convertToSlug } from '@/utils/functions/convertToSlug';
 
 const BlogCardHeaderBody = () => {
   const { ID } = useParams();
@@ -29,12 +33,13 @@ const BlogCardHeaderBody = () => {
   const effectOnce = useRef(false);
   const fetchDataBlog = async () => {
     const filters: BlogFilter[] = [];
-    if ([parseInt(ID!)]) {
+    const parsedId = parseInt(ID!);
+    if (!isNaN(parsedId)) {
       filters.push({
-        varName: "id",
+        varName: 'id',
         searchTerm: [parseInt(ID!)],
-        "op": "in"
-      })
+        op: 'in',
+      });
     }
     const dataSend: BlogDataPropsRequest = {
       filter: filters || [],
@@ -51,11 +56,9 @@ const BlogCardHeaderBody = () => {
   };
 
   useEffect(() => {
-
     if (!effectOnce.current) {
       fetchDataBlog();
     }
-
   }, [dispatch, ID]);
 
   const dateObj = updated_on ? new Date(updated_on) : new Date(updated_on);
@@ -77,7 +80,7 @@ const BlogCardHeaderBody = () => {
     <div className="card-body">
       <img
         className="blog-detail-thumbnail"
-        src={`${BASEURL}${thumbnail ? thumbnail : ''}`}
+        src={thumbnail ? `${BASEURL}${thumbnail}`: defaultImage}
         alt={title ? title : ''}
       />
       <h1 className="titleText">{title ? title : ''}</h1>
@@ -91,10 +94,6 @@ const BlogCardHeaderBody = () => {
                 className="media-left media-top"
                 key={`${index}-${author.photo || author.institution.image}`}
               >
-                <Link
-                  to={`/${BLOGPAGE}/author/${convertToSlug(author?.name)}/${author?.id
-                    }/`}
-                >
                   {author.photo ? (
                     <img
                       className="rounded-circle"
@@ -108,16 +107,10 @@ const BlogCardHeaderBody = () => {
                       <i className="fas fa-user fa-3x" aria-hidden="true"></i>
                     </div>
                   )}
-                </Link>
               </div>
               <div className="media-body" key={`${index}-${author.name}`}>
                 <h4 className="media-heading">
-                  <Link
-                    to={`/${BLOGPAGE}/author/${convertToSlug(author?.name)}/${author?.id
-                      }/`}
-                  >
                     {author.name}
-                  </Link>
                 </h4>
                 {author.description}
               </div>

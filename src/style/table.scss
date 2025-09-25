@@ -54,6 +54,7 @@
   }
 }
 
+
 .grid-container {
   width: 100%;
   height: 50%;
@@ -83,9 +84,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 5px 0;
 
   @include breakpoint-standard(5) {
-    margin-top: 11px;
+    margin-top: 20px;
   }
 
   @include breakpoint-standard(4) {
@@ -125,7 +127,6 @@
       margin-bottom: 20px;
     }
   }
-
 }
 
 .pivot-table-pagination {
@@ -148,14 +149,12 @@
 }
 
 .ag-header-cell-label {
-
   text-align: center;
 }
 
 .ag-header-group-text {
   color: var(--header-color--, #007269) !important;
 }
-
 
 .ag-header-cell-label,
 .ag-header-group-cell-label {
@@ -173,7 +172,7 @@
   height: 32px;
 
   th {
-    color: var(--header-color-summary, #007269);
+    color: var(--header-color-summary, rgb(2 83 204));
     border-bottom: 2px solid #dee2e6;
     padding: 0 5px 0 5px;
     text-align: center;
@@ -182,7 +181,7 @@
 }
 
 .summary-table>div>table>tbody>tr>th {
-  color: var(--header-color-summary, #007269);
+  color: var(--header-color-summary, rgb(2 83 204));
   border-bottom: 2px solid #dee2e6;
   padding: 0 5px 0 5px;
   text-align: center;
@@ -196,7 +195,7 @@
 .summary-table>div>table>tbody>tr>td {
   line-height: 24px;
   padding-left: 12px;
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: rgb(0, 0, 0);
 }
@@ -204,7 +203,7 @@
 .customHeaderLabel {
   float: left;
   text-align: center;
-  font-size: .75rem
+  font-size: 0.75rem;
 }
 
 .customHeaderLabel-box {
@@ -243,11 +242,12 @@ div .customHeaderLabelSummaryTable {
 
 .customSortDownLabel {
   float: left;
-  margin: 0 0 0 3px;
-  padding: 0 2px;
   cursor: pointer;
+  padding: 2px;
   font-size: 10px;
   color: #979595;
+  border: none;
+  background: transparent;
 }
 
 .customSortUpLabel {
@@ -256,8 +256,31 @@ div .customHeaderLabelSummaryTable {
   cursor: pointer;
   font-size: 10px;
   color: #979595;
+  border: none;
+  background: transparent;
+  padding: 2px;
+  margin-left: 2px;
 }
 
+.customSortDownLabel-pivot {
+  float: left;
+  cursor: pointer;
+  font-size: 10px;
+  color: #979595;
+  border: none;
+  background: transparent;
+  margin-left: 4px;
+}
+
+.customSortUpLabel-pivot {
+  float: left;
+  margin-left: 6px;
+  cursor: pointer;
+  font-size: 10px;
+  color: #979595;
+  border: none;
+  background: transparent;
+}
 .customSortRemoveLabel {
   float: left;
   margin: 0 0 0 3px;
@@ -410,6 +433,7 @@ div .customHeaderLabelSummaryTable {
 
   label {
     font-size: 0.85rem;
+    color: rgba(0, 0, 0, 0.6) !important;
   }
 
   @include breakpoint-standard(0) {
@@ -536,7 +560,7 @@ div .customHeaderLabelSummaryTable {
     padding: 4px;
     color: #fff;
     cursor: pointer;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     font-weight: 600;
 
     @include breakpoint-standard(0) {
@@ -570,14 +594,11 @@ div .customHeaderLabelSummaryTable {
     border-radius: 4px;
     padding: 4px;
     color: #fff;
-    // background-color: #17a2b8;
-    // border-color: #17a2b8;
     background-color: rgb(25, 118, 210);
     border-color: rgb(25, 118, 210);
     cursor: pointer;
-    // box-shadow: #17a2b8 1px 2px 6px;
     box-shadow: rgb(25, 118, 210) 1px 2px 6px;
-    height: 26px;
+    height: 32px;
     width: 140px;
 
     @include breakpoint-standard(0) {
@@ -604,25 +625,24 @@ div .customHeaderLabelSummaryTable {
 
 .mobile-responsive {
   position: relative;
-  padding: 30px 120px 0 30px;
-  margin-top: 90px;
+  padding: 130px 120px 0 30px;
 
   @include breakpoint-standard(0) {
-    top: 10px;
+    top: 45px;
     padding: 10px 20px 0 10px;
     margin-top: 6rem;
   }
 
   @include breakpoint-standard(1) {
-    top: 40px;
+    top: 75px;
     padding: 30px 20px 0 10px;
-    margin-top: 3rem
+    margin-top: 3rem;
   }
 
   @include breakpoint-standard(1.1) {
-    top: 40px;
+    top: 75px;
     padding: 30px 20px 0 10px;
-    margin-top: 3rem
+    margin-top: 3rem;
   }
 
   @include breakpoint-standard(2) {
@@ -632,13 +652,13 @@ div .customHeaderLabelSummaryTable {
   }
 
   @include breakpoint-standard(3) {
-    padding: 40px 30px 0 30px;
+    padding: 20px;
     margin-top: 110px;
   }
 
   @include breakpoint-standard(4) {
-    padding: 40px 30px 0 30px;
-    margin-top: 8rem;
+    padding: 20px;
+    margin-top: 10rem;
   }
 }
 
@@ -658,13 +678,13 @@ div .customHeaderLabelSummaryTable {
   @include breakpoint-standard(1) {
     top: 40px;
     padding: 30px 20px 0 10px;
-    margin-top: 3rem
+    margin-top: 3rem;
   }
 
   @include breakpoint-standard(1.1) {
     top: 40px;
     padding: 30px 20px 0 10px;
-    margin-top: 3rem
+    margin-top: 3rem;
   }
 
   @include breakpoint-standard(2) {
@@ -693,11 +713,11 @@ div .customHeaderLabelSummaryTable {
   padding: 135px 30px 0px 20px !important;
 
   @include breakpoint-standard(5) {
-    padding: 135px 50px 0px 20px !important;
+    padding: 155px 50px 0px 20px !important;
   }
 
   @include breakpoint-standard(4) {
-    padding: 150px 0px 0px 20px !important
+    padding: 135px 0px 0px 20px !important;
   }
 
   @include breakpoint-standard(3) {
@@ -705,18 +725,75 @@ div .customHeaderLabelSummaryTable {
   }
 
   @include breakpoint-standard(2) {
-    padding: 150px 2px !important;
+    padding: 130px 2px !important;
   }
 
   @include breakpoint-standard(1) {
-    padding: 150px 2px !important;
+    padding: 130px 2px !important;
   }
 
   @include breakpoint-standard(0) {
-    padding: 150px 2px !important;
+    padding: 130px 2px !important;
   }
 }
 
+
+.mobile-responsive-voyages {
+  padding: 115px 0px 0px 10px !important;
+
+  @include breakpoint-standard(5) {
+    padding: 155px 50px 0px 20px !important;
+  }
+
+  @include breakpoint-standard(4) {
+    padding: 135px 0px 0px 20px !important;
+  }
+
+  @include breakpoint-standard(3) {
+    padding: 150px 2px !important;
+  }
+
+  @include breakpoint-standard(2) {
+    padding: 130px 2px !important;
+  }
+
+  @include breakpoint-standard(1) {
+    padding: 130px 2px !important;
+  }
+
+  @include breakpoint-standard(0) {
+    padding: 130px 2px !important;
+  }
+}
+.mobile-responsive-map-enslaved{
+  padding: 140px 35px 0px 10px !important;
+  @include breakpoint-standard(6) {
+    padding: 140px 40px 0px 15px !important
+  }
+  @include breakpoint-standard(5) {
+    padding: 155px 50px 0px 20px !important;
+  }
+
+  @include breakpoint-standard(4) {
+    padding: 135px 0px 0px 20px !important;
+  }
+
+  @include breakpoint-standard(3) {
+    padding: 150px 2px !important;
+  }
+
+  @include breakpoint-standard(2) {
+    padding: 130px 2px !important;
+  }
+
+  @include breakpoint-standard(1) {
+    padding: 130px 2px !important;
+  }
+
+  @include breakpoint-standard(0) {
+    padding: 130px 2px !important;
+  }
+}
 .summary-box {
   margin-top: 8.5rem;
 
@@ -895,4 +972,43 @@ div .customHeaderLabelSummaryTable {
 .ag-cell-wrap-text {
   white-space: normal;
   word-break: break-word;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.custom-select-dropdown {
+  min-width: 280px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.custom-select-dropdown-wide {
+  min-width: 320px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
 }

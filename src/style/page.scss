@@ -65,6 +65,43 @@
   padding: 0;
   margin: 0;
   background-color: #fff;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+
+  @include breakpoint-standard(6) {
+    height: 100%;
+  }
+
+  @include breakpoint-standard(4) {
+    top: -40px !important;
+  }
+
+  @include breakpoint-standard(3) {
+    top: -15px !important;
+  }
+
+  @include breakpoint-standard(2) {
+    top: -15px !important;
+  }
+
+  @include breakpoint-standard(1.1) {
+    top: -15px !important;
+  }
+
+  @include breakpoint-standard(1) {
+    top: -10px !important;
+  }
+
+  @include breakpoint-standard(0) {
+    top: -10px !important;
+  }
+}
+
+.voyages-home-page-timelapse {
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+  height: calc(100vh - 80px);
 
   @include breakpoint-standard(6) {
     height: 100%;
@@ -96,6 +133,8 @@
 }
 
 #content-container {
+  position: relative;
+  width: 100%;
   @include breakpoint-standard(1.1) {
     position: relative;
     top: -5%;
@@ -188,8 +227,8 @@
   }
 
   @include breakpoint-standard(4) {
-    top: 10%;
-    right: 10%;
+    top: 11%;
+    right: 5%;
     height: auto;
     display: inline;
     align-items: flex-start;
@@ -197,7 +236,7 @@
   }
 
   @include breakpoint-standard(3) {
-    top: 8.5%;
+    top: 10%;
     height: auto;
     display: inline;
     align-items: center;
@@ -215,7 +254,7 @@
   }
 
   @include breakpoint-standard(1.1) {
-    top: 9%;
+    top: 10%;
     height: auto;
     display: inline;
     align-items: center;
@@ -224,21 +263,23 @@
   }
 
   @include breakpoint-standard(1) {
-    top: 9%;
+    top: 10%;
+    top: 10%;
     height: auto;
     display: inline;
     align-items: center;
     padding-right: 5px;
-    right: 4%;
+    right: 0;
   }
 
   @include breakpoint-standard(0) {
-    top: 9%;
+    top: 10%;
+    top: 10%;
     height: auto;
     display: inline;
     align-items: center;
     padding-right: 5px;
-    right: 2%;
+    right: 0;
   }
 }
 
@@ -261,7 +302,7 @@
   }
 
   @include breakpoint-standard(4) {
-    width: 80px !important;
+    width: 75px !important;
     height: 32px;
     font-size: 10px !important;
     min-width: 75px !important;
@@ -272,7 +313,7 @@
     width: 45px !important;
     height: 24px;
     font-size: 10px !important;
-    min-width: 48px !important;
+    min-width: 45px !important;
     margin: 0 2px !important;
   }
 
@@ -280,31 +321,31 @@
     width: 45px !important;
     height: 24px;
     font-size: 10px !important;
-    min-width: 48px !important;
+    min-width: 45px !important;
     margin: 0 2px !important;
   }
 
   @include breakpoint-standard(1.1) {
-    width: 52px !important;
+    width: 45px !important;
     height: 24px;
     font-size: 8px !important;
-    min-width: 46px !important;
+    min-width: 45px !important;
     margin: 0 2px !important;
   }
 
   @include breakpoint-standard(1) {
-    width: 46px !important;
+    width: 40px !important;
     height: 28px;
     font-size: 7px !important;
-    min-width: 46px !important;
+    min-width: 40px !important;
     margin: 0 2px !important;
   }
 
   @include breakpoint-standard(0) {
-    width: 42px !important;
+    width: 35px !important;
     height: 26px;
     font-size: 6.5px !important;
-    min-width: 30px !important;
+    min-width: 35px !important;
     margin: 1px 1px !important;
   }
 }
@@ -327,7 +368,7 @@
   @include breakpoint-standard(4) {
     display: inline-block;
     padding-right: 5rem;
-    top: 9.5%;
+    top: 10%;
     height: 0;
   }
 
@@ -388,7 +429,6 @@
   background: linear-gradient(rgba(127, 118, 191, 0.8),
       rgba(127, 118, 191, 0.8)),
     url('../assets/intra-american.jpeg') center / cover;
-
 }
 
 #main-voyagepage-texas {
@@ -400,8 +440,18 @@
 
 .credit-bottom-right {
   position: absolute;
-  bottom: 8px;
-  right: 16px;
+  bottom: 10px;
+  right: 10px;
+  color: rgb(0, 0, 0);
+  font-size: 0.95rem;
+
+  @include breakpoint-standard(1) {
+    display: none;
+  }
+
+  @include breakpoint-standard(0) {
+    display: none;
+  }
 }
 
 .main-script-text-box {
@@ -598,13 +648,11 @@
         left: 3rem;
       }
 
-
       @include breakpoint-standard(0) {
         position: relative;
         left: 2rem;
       }
     }
-
   }
 
   .separator {
@@ -627,6 +675,18 @@
     width: 1.5rem;
   }
 
+  .social-icon-x {
+    color: rgb(239, 243, 244);
+    background: rgb(239, 243, 244);
+    border-radius: 50%;
+    border: 1px solid rgb(239, 243, 244);
+    width: 1.4rem;
+    opacity: 0.7;
+    margin: 0 0.3rem;
+    transition-duration: 0.2s;
+    transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
   .social-icon {
     width: 1.5rem;
     opacity: 0.7;
@@ -636,7 +696,6 @@
     transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
   }
 }
-
 
 .loading-logo-graph {
   display: flex;

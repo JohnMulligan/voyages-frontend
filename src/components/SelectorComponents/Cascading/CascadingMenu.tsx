@@ -1,46 +1,52 @@
-import { Toolbar, Hidden } from '@mui/material';
-import { CascadingMenuProps, TYPESOFDATASETPEOPLE } from '@/share/InterfaceTypes';
-import { MenuListsDropdown } from './MenuListsDropdown';
+import { useEffect, useState } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
+
+import SaveSearchComponent from '@/components/FilterComponents/SaveSearchComponent/SaveSearchComponent';
+import { usePageRouter } from '@/hooks/usePageRouter';
+import { setPeopleEnslavedBlocksMenuList } from '@/redux/getPeopleEnslavedDataSetCollectionSlice';
+import { setViewAll } from '@/redux/getShowFilterObjectSlice';
+import { resetAllStateToInitailState } from '@/redux/resetAllSlice';
 import { AppDispatch, RootState } from '@/redux/store';
+import { VOYAGE } from '@/share/CONST_DATA';
+import { TYPESOFDATASETPEOPLE } from '@/share/InterfaceTypes';
+import jsonDataPEOPLECOLLECTIONS from '@/utils/flatfiles/people/people_collections.json';
+
+import { MenuListsDropdown } from './MenuListsDropdown';
 import { ResetAllButton } from '../ButtonComponents/ResetAllButton';
 import { ViewAllButton } from '../ButtonComponents/ViewAllButton';
-import { resetAllStateToInitailState } from '@/redux/resetAllSlice';
-import { usePageRouter } from '@/hooks/usePageRouter';
-import { useEffect, useState } from 'react';
-import { setPeopleEnslavedBlocksMenuList } from '@/redux/getPeopleEnslavedDataSetCollectionSlice';
-import jsonDataPEOPLECOLLECTIONS from '@/utils/flatfiles/PEOPLE_COLLECTIONS.json';
-import SaveSearchComponent from '@/components/FilterComponents/SaveSearchComponent/SaveSearchComponent';
-import '@/style/Nav.scss'
-import { VOYAGE } from '@/share/CONST_DATA';
-import ShowFilterObject from '../ShowFilterObject/ShowFilterObject';
-import { setViewAll } from '@/redux/getShowFilterObjectSlice';
+import '@/style/Nav.scss';
+import ShowFilterObject, {
+  FilterDataItem,
+} from '../ShowFilterObject/ShowFilterObject';
 
-export default function CascadingMenu(props: CascadingMenuProps) {
+export default function CascadingMenu() {
   const dispatch: AppDispatch = useDispatch();
-  const { varName } = useSelector(
-    (state: RootState) => state.rangeSlider
-  );
+  const { varName } = useSelector((state: RootState) => state.rangeSlider);
   const { currentBlockName } = usePageRouter();
   const { clusterNodeKeyVariable, clusterNodeValue } = useSelector(
-    (state: RootState) => state.getNodeEdgesAggroutesMapData
+    (state: RootState) => state.getNodeEdgesAggroutesMapData,
   );
   const { styleNamePeople } = useSelector(
-    (state: RootState) => state.getPeopleEnlavedDataSetCollection
+    (state: RootState) => state.getPeopleEnlavedDataSetCollection,
   );
-  const { viewAll } = useSelector((state: RootState) => state.getShowFilterObject)
+  const { viewAll } = useSelector(
+    (state: RootState) => state.getShowFilterObject,
+  );
 
   useEffect(() => {
-
-    if (currentBlockName === 'table' && styleNamePeople === TYPESOFDATASETPEOPLE.africanOrigins) {
-      dispatch(setPeopleEnslavedBlocksMenuList(jsonDataPEOPLECOLLECTIONS[1].blocks));
+    if (
+      currentBlockName === 'table' &&
+      styleNamePeople === TYPESOFDATASETPEOPLE.africanOrigins
+    ) {
+      dispatch(
+        setPeopleEnslavedBlocksMenuList(jsonDataPEOPLECOLLECTIONS[1].blocks),
+      );
     }
-
-  }, [styleNamePeople, currentBlockName]);
+  }, [dispatch, styleNamePeople, currentBlockName]);
 
   const handleResetAll = () => {
-    console.log('Reset')
-    dispatch(resetAllStateToInitailState())
+    dispatch(resetAllStateToInitailState());
     const keysToRemove = Object.keys(localStorage);
     keysToRemove.forEach((key) => {
       if (key === 'filterObject') {
@@ -48,35 +54,48 @@ export default function CascadingMenu(props: CascadingMenuProps) {
       }
     });
     localStorage.removeItem('saveSearchID');
-    window.location.reload()
+    localStorage.removeItem('visibleColumns');
+    window.location.reload();
   };
 
   const handleViewAll = () => {
     dispatch(setViewAll(!viewAll));
   };
+  const [filterData, setFilterData] = useState<FilterDataItem[]>([]);
 
   return (
     <>
-      <div className='list-filter-menu-bar'>
-        <Toolbar
-          sx={{
-            '@media (min-width: 600px)': {
-              minHeight: '40px',
-            },
-          }}
-        >
-          <Hidden smDown>
-            <div className='list-filter-menu'>
-              <MenuListsDropdown />
-              <ViewAllButton varName={varName} clusterNodeKeyVariable={clusterNodeKeyVariable} clusterNodeValue={clusterNodeValue} handleViewAll={handleViewAll} />
-              <ResetAllButton varName={varName} clusterNodeKeyVariable={clusterNodeKeyVariable} clusterNodeValue={clusterNodeValue} handleResetAll={handleResetAll} />
-            </div>
-          </Hidden>
-        </Toolbar>
-        {(currentBlockName === '' || currentBlockName === VOYAGE || currentBlockName === 'people') && <SaveSearchComponent />}
+      <div className="list-filter-menu-bar">
+        <div className="list-filter-menu">
+          <MenuListsDropdown />
+          {filterData.length > 0 ? (
+            <>
+              <ViewAllButton
+                varName={varName}
+                clusterNodeKeyVariable={clusterNodeKeyVariable}
+                clusterNodeValue={clusterNodeValue}
+                handleViewAll={handleViewAll}
+              />
+              <ResetAllButton
+                varName={varName}
+                clusterNodeKeyVariable={clusterNodeKeyVariable}
+                clusterNodeValue={clusterNodeValue}
+                handleResetAll={handleResetAll}
+              />
+            </>
+          ) : null}
+        </div>
+        {(currentBlockName === '' ||
+          currentBlockName === VOYAGE ||
+          currentBlockName === 'people') && <SaveSearchComponent />}
       </div>
       <div className={`panel-list-unshow${viewAll ? '-show' : ''}`}>
-        <ShowFilterObject ariaExpanded={false} handleViewAll={handleViewAll} />
+        <ShowFilterObject
+          ariaExpanded={false}
+          handleViewAll={handleViewAll}
+          setFilterData={setFilterData}
+          filterData={filterData}
+        />
       </div>
     </>
   );

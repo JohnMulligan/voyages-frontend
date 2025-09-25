@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { IconButton, List, ListItem, ListItemText, Stack } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
-import { TextFieldSearch } from '@/styleMUI';
-import { AppDispatch, RootState } from '@/redux/store';
+import { IconButton, List, ListItem, ListItemText, Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 import { fetchSearchGlobal } from '@/fetch/homeFetch/fetchSearchGlobal';
 import {
   setInputSearchValue,
@@ -11,39 +12,50 @@ import {
   setSearchGlobalData,
   setTypePage,
 } from '@/redux/getCommonGlobalSearchResultSlice';
-import { GlobalSearchProp } from '@/share/InterfaceTypesGlobalSearch';
-import '@/style/homepage.scss';
-import { useNavigate } from 'react-router-dom';
+import {
+  setCurrentBlockName,
+  setCurrentEnslavedPage,
+} from '@/redux/getScrollEnslavedPageSlice';
+import { setCurrentEnslaversPage } from '@/redux/getScrollEnslaversPageSlice';
+import { setCurrentPage } from '@/redux/getScrollPageSlice';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   ALLENSLAVEDPAGE,
   ALLVOYAGESPAGE,
   BLOGPAGE,
+  DOCUMENTPAGE,
   ENSALVEDPAGE,
   ENSALVERSPAGE,
   GlobalSearchBlogType,
   GlobalSearchEnslavedType,
   GlobalSearchEnslaversType,
+  GlobalSearchSourcesType,
   GlobalSearchVoyagesType,
   TRANSATLANTICENSLAVERS,
 } from '@/share/CONST_DATA';
-import { setCurrentPage } from '@/redux/getScrollPageSlice';
-import { setCurrentEnslaversPage } from '@/redux/getScrollEnslaversPageSlice';
-import { setCurrentBlockName, setCurrentEnslavedPage } from '@/redux/getScrollEnslavedPageSlice';
+import { GlobalSearchProp } from '@/share/InterfaceTypesGlobalSearch';
+import '@/style/homepage.scss';
+import { TextFieldSearch } from '@/styleMUI';
 import {
   getOptionLabelSearchGlobal,
   shouldDisable,
 } from '@/utils/functions/getOptionLabelSearchGlobal';
+import { translationHomepage } from '@/utils/functions/translationLanguages';
 
 const AutoGlobalSearchBar = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const { data, inputSearchValue, requestId } = useSelector(
-    (state: RootState) => state.getCommonGlobalSearch
+    (state: RootState) => state.getCommonGlobalSearch,
   );
   const [showClearButton, setShowClearButton] = useState<boolean>(false);
   const [calledIds, setCalledIds] = useState<Set<number>>(new Set());
   const [isFetching, setIsFetching] = useState(false);
   const signalRef = useRef<AbortController | null>(null);
+  const { languageValue } = useSelector(
+    (state: RootState) => state.getLanguages,
+  );
+  const translatedSearch = translationHomepage(languageValue);
 
   useEffect(() => {
     // Clean up the signal when the component unmounts
@@ -87,24 +99,23 @@ const AutoGlobalSearchBar = () => {
     };
   }, [dispatch, inputSearchValue, requestId, calledIds]);
 
-  const handleInputChange =
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = event.target.value;
-      dispatch(setInputSearchValue(value));
-      setShowClearButton(value !== '');
-      const newRequestId = Date.now();
-      dispatch(setRequestId(newRequestId));
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    dispatch(setInputSearchValue(value));
+    setShowClearButton(value !== '');
+    const newRequestId = Date.now();
+    dispatch(setRequestId(newRequestId));
 
-      // Cancel any ongoing fetch request using the previous signal
-      if (signalRef.current) {
-        signalRef.current.abort();
-        signalRef.current = null;
-      }
-
-      // Create a new signal for the fetch request
-      const newSignal = new AbortController();
-      signalRef.current = newSignal;
+    // Cancel any ongoing fetch request using the previous signal
+    if (signalRef.current) {
+      signalRef.current.abort();
+      signalRef.current = null;
     }
+
+    // Create a new signal for the fetch request
+    const newSignal = new AbortController();
+    signalRef.current = newSignal;
+  };
 
   const handleSelect = (option: GlobalSearchProp | null) => {
     if (option) {
@@ -125,6 +136,8 @@ const AutoGlobalSearchBar = () => {
         navigate(`${ENSALVERSPAGE}${TRANSATLANTICENSLAVERS}#people`);
       } else if (type === GlobalSearchBlogType) {
         navigate(`${BLOGPAGE}`);
+      } else if (type === GlobalSearchSourcesType) {
+        navigate(`${DOCUMENTPAGE}`);
       }
       localStorage.setItem('global_search', inputSearchValue);
     }
@@ -143,7 +156,7 @@ const AutoGlobalSearchBar = () => {
         id="search"
         value={inputSearchValue}
         fullWidth
-        placeholder="Search for voyages, people, documents, and essays"
+        placeholder={translatedSearch.searchInput}
         onChange={handleInputChange}
         InputProps={{
           className: 'input-global-search',
@@ -171,9 +184,11 @@ const AutoGlobalSearchBar = () => {
               className="list-search-global"
             >
               <ListItem
-                button
-                onClick={() => handleSelect(option)}
-                disabled={shouldDisable(option)}
+                onClick={() => !shouldDisable(option) && handleSelect(option)}
+                sx={{
+                  opacity: shouldDisable(option) ? 0.5 : 1,
+                  cursor: shouldDisable(option) ? 'not-allowed' : 'pointer',
+                }}
               >
                 <ListItemText primary={getOptionLabelSearchGlobal(option)} />
               </ListItem>

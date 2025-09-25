@@ -1,30 +1,38 @@
 import React from 'react';
 import '@/style/landing.scss';
-import ENSLAVERS from '@/assets/enslavers-blog.png';
+import ENSLAVERS from '@/assets/enslaver_enslaved_LOC_02.jpg';
 import ButtonLearnMore from '@/components/SelectorComponents/ButtonComponents/ButtonLearnMore';
 import { ENSALVERSPAGE, TRANSATLANTICENSLAVERS } from '@/share/CONST_DATA';
+import { translationHomepage } from '@/utils/functions/translationLanguages';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { Link } from 'react-router-dom';
 const EnslaversBlogs: React.FC = () => {
-    return (
-        <div className="container-enslavers">
-            <div className="enslavers-content">
-                <div className="enslavers-content-bg">
-                    <img src={ENSLAVERS} alt="Enslavers" className="register-img" />
-                </div>
-                <div className="enslavers-content-detail">
-                    <h1>Enslavers</h1>
-                    <p>
-                        At the foundation of the African diaspora lay an enslaver (or an owner),
-                        the enslaved person, and the movement of the latter induced by the former
-                        (this could be one of the various slave trades, a runaway slave or a single transaction between buyer and seller).
-                        Any movement of property or changes in that property’s status generated documentation – in the case of both slaves
-                        and their owners, these were typically accounts, baptismal certificates, newspapers,
-                        or shipping records.
-                    </p>
-                    <ButtonLearnMore path={`${ENSALVERSPAGE}${TRANSATLANTICENSLAVERS}#people`} />
-                </div>
-            </div>
+  const { languageValue } = useSelector(
+    (state: RootState) => state.getLanguages
+  );
+  const translatedHomepage = translationHomepage(languageValue);
+  return (
+    <div className="container-enslavers">
+      <div className="enslavers-content">
+        <Link
+          to="https://www.loc.gov/pictures/item/2014647512/"
+          className="enslavers-content-bg"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img src={ENSLAVERS} alt="Enslavers" className="register-img" />
+        </Link>
+        <div className="enslavers-content-detail">
+          <h1>{translatedHomepage.homeEnslavers}</h1>
+          <p>{translatedHomepage.homeEnslaversDes}</p>
+          <ButtonLearnMore
+            path={`${ENSALVERSPAGE}${TRANSATLANTICENSLAVERS}#people`}
+          />
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default EnslaversBlogs;

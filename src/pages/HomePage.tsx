@@ -1,30 +1,34 @@
 import React, { useEffect } from 'react';
+
 import AOS from 'aos';
+
 import 'aos/dist/aos.css';
 import '@/style/homepage.scss';
-import VideoBackground from '@/components/PresentationComponents/VideoBackground/VideoBackground';
-import MenuButtonHomePage from '@/components/SelectorComponents/ButtonComponents/MenuButtonHomePage';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import SlaveVoyageLogo from '@/components/NavigationComponents/LogoComponent/SlaveVoyageLogo';
 import AutoGlobalSearchBar from '@/components/PresentationComponents/GlobalSearch/AutoGlobalSearchBar';
 import GlobalHomeNavigations from '@/components/PresentationComponents/GlobalSearch/GlobalHomeNavigations';
-import { Link } from 'react-router-dom';
-import { BLOGPAGE } from '@/share/CONST_DATA';
+import AfricanOrigins from '@/components/PresentationComponents/LadingPage/AfricanOrigins';
+import EnslaversBlogs from '@/components/PresentationComponents/LadingPage/EnslaversBlogs';
+import IntraAmerican from '@/components/PresentationComponents/LadingPage/IntraAmerican';
 import NewsBlog from '@/components/PresentationComponents/LadingPage/NewsBlog';
 import SouthSeaCompanyDocuments from '@/components/PresentationComponents/LadingPage/SouthSeaCompanyDocuments';
-import ArtInspiredBySlaveVoyages from '@/components/PresentationComponents/LadingPage/ArtInspiredBySlaveVoyages';
-import EnslaversBlogs from '@/components/PresentationComponents/LadingPage/EnslaversBlogs';
-import AfricanOrigins from '@/components/PresentationComponents/LadingPage/AfricanOrigins';
-import IntraAmerican from '@/components/PresentationComponents/LadingPage/IntraAmerican';
 import TransAtlantic from '@/components/PresentationComponents/LadingPage/TransAtlantic';
+import VideoBackground from '@/components/PresentationComponents/VideoBackground/VideoBackground';
 import { FooterComponent } from '@/components/SelectorComponents/ButtonComponents/FooterComponents';
+import MenuButtonHomePage from '@/components/SelectorComponents/ButtonComponents/MenuButtonHomePage';
 import LanguagesDropdown from '@/components/SelectorComponents/DropDown/LanguagesDropdown';
-import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { BLOGPAGE } from '@/share/CONST_DATA';
 import { translationHomepage } from '@/utils/functions/translationLanguages';
 
 const HomePage: React.FC = () => {
-  const { languageValue } = useSelector((state: RootState) => state.getLanguages);
-  const translatedHomepage = translationHomepage(languageValue)
+  const { languageValue } = useSelector(
+    (state: RootState) => state.getLanguages,
+  );
+  const translatedHomepage = translationHomepage(languageValue);
   const handleBackToTop = () => {
     window.scrollTo({
       top: 0,
@@ -59,7 +63,10 @@ const HomePage: React.FC = () => {
       <div className="centered-content">
         <VideoBackground />
         <MenuButtonHomePage />
-        <div className='languages-homepage'> <LanguagesDropdown /></div>
+        <div className="languages-homepage">
+          {' '}
+          <LanguagesDropdown />
+        </div>
         <div className="home-voyagepage-content">
           <div data-aos="flip-up">
             <SlaveVoyageLogo />
@@ -76,7 +83,9 @@ const HomePage: React.FC = () => {
           <div className="document-resources-container">
             <div className="about-project">
               <Link to={`/${BLOGPAGE}/slavevoyages-introduction/50`}>
-                <div className="about-project-btn">{translatedHomepage.learnMore}</div>
+                <div className="about-project-btn">
+                  {translatedHomepage.aboutProject}
+                </div>
               </Link>
             </div>
           </div>
@@ -87,9 +96,6 @@ const HomePage: React.FC = () => {
       </div>
       <div data-aos="fade-up">
         <SouthSeaCompanyDocuments />
-      </div>
-      <div data-aos="fade-up">
-        <ArtInspiredBySlaveVoyages />
       </div>
       <div data-aos="fade-up">
         <EnslaversBlogs />
@@ -103,7 +109,6 @@ const HomePage: React.FC = () => {
       <div data-aos="fade-up">
         <TransAtlantic />
       </div>
-
       <div className="backToTopBtn">
         <div
           className="btn"

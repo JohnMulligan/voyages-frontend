@@ -1,8 +1,17 @@
-import voyageIcon from '@/assets/voyage-cycle.svg';
-import peopleIcon from '@/assets/people-cycle.svg';
-import timelapseIcon from '@/assets/timelapse.png';
-import resourceIcon from '@/assets/resources.svg';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import peopleIcon from '@/assets/people-cycle.svg';
+import resourceIcon from '@/assets/resources.svg';
+import timelapseIcon from '@/assets/timeLap_circle.svg';
+import voyageIcon from '@/assets/voyage-cycle.svg';
+import {
+  setPathNameEnslaved,
+  setPathNameVoyages,
+} from '@/redux/getDataPathNameSlice';
+import { setCurrentPage } from '@/redux/getScrollPageSlice';
+import { resetAll } from '@/redux/resetAllSlice';
+import { AppDispatch, RootState } from '@/redux/store';
 import {
   ALLENSLAVED,
   ALLVOYAGES,
@@ -11,17 +20,14 @@ import {
   TRANSATLANTICPAGE,
   TRANSATLANTICTIMELAPSE,
 } from '@/share/CONST_DATA';
-import { AppDispatch, RootState } from '@/redux/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { setPathNameEnslaved, setPathNameVoyages } from '@/redux/getDataPathNameSlice';
-import { setCurrentPage } from '@/redux/getScrollPageSlice';
-import { resetAll } from '@/redux/resetAllSlice';
 import { translationHomepage } from '@/utils/functions/translationLanguages';
 
 const GlobalHomeNavigations = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { languageValue } = useSelector((state: RootState) => state.getLanguages);
-  const translatedHomepage = translationHomepage(languageValue)
+  const { languageValue } = useSelector(
+    (state: RootState) => state.getLanguages,
+  );
+  const translatedHomepage = translationHomepage(languageValue);
 
   const handleHomeSearch = () => {
     dispatch(setCurrentPage(1));
@@ -36,19 +42,24 @@ const GlobalHomeNavigations = () => {
     <>
       <div className="voyages-people-places">
         <div className="place-page-box">
-          <div className="voyages-people-places-title">{translatedHomepage.navigatorTitleVoyages}</div>
-          <Link
-            to={`${TRANSATLANTICPAGE}#voyages`}
-            onClick={handleHomeSearch}
-          >
-            <img src={voyageIcon} alt="Search by Vessels" style={{ opacity: 0.65 }} />
+          <div className="voyages-people-places-title">
+            {translatedHomepage.navigatorTitleVoyages}
+          </div>
+          <Link to={`${TRANSATLANTICPAGE}#voyages`} onClick={handleHomeSearch}>
+            <img
+              src={voyageIcon}
+              alt="Search by Vessels"
+              style={{ opacity: 0.65 }}
+            />
           </Link>
           <div className="voyages-people-places-subtitle">
             {translatedHomepage.navigatorSubTitleVoyages}
           </div>
         </div>
         <div className="place-page-box">
-          <div className="voyages-people-places-title">{translatedHomepage.navigatorTitlePeople}</div>
+          <div className="voyages-people-places-title">
+            {translatedHomepage.navigatorTitlePeople}
+          </div>
           <Link
             to={`/${PASTHOMEPAGE}`}
             onClick={() => {
@@ -61,12 +72,16 @@ const GlobalHomeNavigations = () => {
           >
             <img src={peopleIcon} alt="People" style={{ opacity: 0.65 }} />
           </Link>
-          <div className="voyages-people-places-subtitle">{translatedHomepage.navigatorSubTitlePeople}</div>
+          <div className="voyages-people-places-subtitle">
+            {translatedHomepage.navigatorSubTitlePeople}
+          </div>
         </div>
         <div className="place-page-box">
-          <div className="voyages-people-places-title">{translatedHomepage.navigatorTitleTimelapse}</div>
+          <div className="voyages-people-places-title">
+            {translatedHomepage.navigatorTitleTimelapse}
+          </div>
           <Link to={`${TRANSATLANTICTIMELAPSE}#timelapse`}>
-            <img src={timelapseIcon} alt="Timelapse" style={{ opacity: 0.75, width: 111, height: 111, borderRadius: '50%', padding: 10 }} />
+            <img src={timelapseIcon} alt="Timelapse" />
           </Link>
           <div className="voyages-people-places-subtitle">
             <div>{translatedHomepage.navigatorSubTitleTimelapse}</div>
@@ -74,7 +89,9 @@ const GlobalHomeNavigations = () => {
           </div>
         </div>
         <div className="place-page-box">
-          <div className="voyages-people-places-title">{translatedHomepage.navigatorTitleWriting}</div>
+          <div className="voyages-people-places-title">
+            {translatedHomepage.navigatorTitleWriting}
+          </div>
           <Link to={`/${BLOGPAGE}`}>
             <img src={resourceIcon} alt="Writing" width={129} />
           </Link>

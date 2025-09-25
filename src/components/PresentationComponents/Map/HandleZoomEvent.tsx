@@ -1,4 +1,11 @@
-import { ESTIMATES, PLACE, REGION, ZOOM_LEVEL_REGION_ESTIMATE_MIN, ZOOM_LEVEL_THRESHOLD, broadRegion } from '@/share/CONST_DATA';
+import {
+  ESTIMATES,
+  PLACE,
+  REGION,
+  ZOOM_LEVEL_REGION_ESTIMATE_MIN,
+  ZOOM_LEVEL_THRESHOLD,
+  broadRegion,
+} from '@/share/CONST_DATA';
 import { HandleZoomEventProps } from '@/share/InterfaceTypesMap';
 import { useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
@@ -10,7 +17,8 @@ import { setHasFetchedRegion } from '@/redux/getNodeEdgesAggroutesMapDataSlice';
 export const HandleZoomEvent: React.FC<HandleZoomEventProps> = ({
   setZoomLevel,
   setRegionPlace,
-  zoomLevel, styleRouteName
+  zoomLevel,
+  styleRouteName,
 }) => {
   const map = useMap();
   const dispatch: AppDispatch = useDispatch();
@@ -59,15 +67,23 @@ export const HandleZoomEvent: React.FC<HandleZoomEventProps> = ({
         }
         if (styleRouteName !== ESTIMATES) {
           if (newZoomLevel >= ZOOM_LEVEL_THRESHOLD) {
-            setRegionPlace(PLACE);
+            if(setRegionPlace){
+              setRegionPlace(PLACE);
+            }
+           
           } else {
-            setRegionPlace(REGION);
+            if(setRegionPlace){
+              setRegionPlace(REGION);
+            }
+           
           }
         } else if (styleRouteName === ESTIMATES) {
           if (newZoomLevel >= ZOOM_LEVEL_REGION_ESTIMATE_MIN) {
-            setRegionPlace(REGION);
+            if(setRegionPlace){
+              setRegionPlace(REGION);
+            }
           } else {
-            setRegionPlace(broadRegion);
+            if(setRegionPlace) setRegionPlace(broadRegion);
           }
         }
       }

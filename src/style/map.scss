@@ -3,45 +3,31 @@
     @media only screen and (max-width: 374px) {
       @content;
     }
-  }
-
-  @else if $size==1 {
+  } @else if $size==1 {
     @media only screen and (min-width: 375px) and (max-width: 479px) {
       @content;
     }
-  }
-
-  @else if $size==2 {
+  } @else if $size==2 {
     @media only screen and (min-width: 480px) and (max-width: 575px) {
       @content;
     }
-  }
-
-  @else if $size==3 {
+  } @else if $size==3 {
     @media only screen and (min-width: 576px) and (max-width: 767px) {
       @content;
     }
-  }
-
-  @else if $size==4 {
+  } @else if $size==4 {
     @media only screen and (min-width: 768px) and (max-width: 991px) {
       @content;
     }
-  }
-
-  @else if $size==5 {
+  } @else if $size==5 {
     @media only screen and (min-width: 992px) and (max-width: 1024px) {
       @content;
     }
-  }
-
-  @else if $size==6 {
+  } @else if $size==6 {
     @media only screen and (min-width: 1025px) and (max-width: 1366px) {
       @content;
     }
-  }
-
-  @else if $size==7 {
+  } @else if $size==7 {
     @media only screen and (max-width: 1440px) {
       @content;
     }
@@ -53,13 +39,47 @@
 }
 
 .legendtable {
-  padding: 4px
+  padding: 4px;
 }
-
 .leaflet-container {
+  position: relative;
   font-family: sans-serif;
 
+  .leaflet-bottom-voyages,
+  .leaflet-bottom {
+    position: absolute; 
+    left: 0;
+  }
+
+  .leaflet-bottom-voyages {
+    bottom: 50px !important;
+    @include breakpoint-standard(7) {
+      bottom: 58px !important;
+    }
+    @include breakpoint-standard(6) {
+      bottom: 125px !important
+    }
+    @include breakpoint-standard(5) {
+      bottom:125px !important
+    }
+    @include breakpoint-standard(4) {
+      bottom: 110px !important;
+    }
+    @include breakpoint-standard(3) {
+      bottom: 70px !important
+    }
+    @include breakpoint-standard(2) {
+      bottom: 70px !important
+    }
+    @include breakpoint-standard(1) {
+      bottom: 70px !important
+    }
+    @include breakpoint-standard(0) {
+      bottom: 70px !important
+    }
+  }
 }
+
 
 .map-url-container {
   width: 100%;
@@ -172,7 +192,7 @@
     margin: auto;
     height: 80vh;
 
-    >img {
+    > img {
       width: 15%;
 
       @include breakpoint-standard(5) {
@@ -189,7 +209,6 @@
     }
   }
 }
-
 
 .animated-line {
   fill: none;

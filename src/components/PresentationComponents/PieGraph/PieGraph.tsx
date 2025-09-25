@@ -1,15 +1,18 @@
-import { useState, useEffect, ChangeEvent, useCallback, useMemo } from 'react';
-import Plot from 'react-plotly.js';
-import PIECHART_OPTIONS from '@/utils/flatfiles/VOYAGE_PIECHART_OPTIONS.json';
-import { Grid, SelectChangeEvent } from '@mui/material';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useEffect, useMemo } from 'react';
+
+import { SelectChangeEvent } from '@mui/material';
 import { useWindowSize } from '@react-hook/window-size';
-import { RootState } from '@/redux/store';
+import Plot from 'react-plotly.js';
 import { useSelector } from 'react-redux';
-import { useGetOptionsQuery } from '@/fetch/voyagesFetch/fetchApiService';
-import { SelectDropdown } from '../../SelectorComponents/SelectDrowdown/SelectDropdown';
-import { RadioSelected } from '../../SelectorComponents/RadioSelected/RadioSelected';
+
 import LOADINGLOGO from '@/assets/sv-logo_v2_notext.svg';
-import NODATA from '@/assets/noData.png';
+import '@/style/homepage.scss';
+import NoDataState from '@/components/NoResultComponents/NoDataState';
+import { useGetOptionsQuery } from '@/fetch/voyagesFetch/fetchApiService';
+import { fetchOptionsFlat } from '@/fetch/voyagesFetch/fetchOptionsFlat';
+import { useFetchPieCharts } from '@/hooks/useFetchPieCharts';
+import { RootState } from '@/redux/store';
 import {
   VoyagesOptionProps,
   Options,
@@ -17,53 +20,61 @@ import {
   CurrentPageInitialState,
   PlotPIEX,
   PlotPIEY,
-  IRootFilterObjectScatterRequest,
+  IRootFilterObjectRequest,
+  LanguageKey,
 } from '@/share/InterfaceTypes';
-import { fetchOptionsFlat } from '@/fetch/voyagesFetch/fetchOptionsFlat';
+import PIECHART_OPTIONS from '@/utils/flatfiles/voyages/voyages_piechart_options.json';
 import {
-  getMobileMaxHeight,
-  getMobileMaxWidth,
-  maxWidthSize,
-} from '@/utils/functions/maxWidthSize';
-import '@/style/homepage.scss';
-import { useGroupBy } from '@/hooks/useGroupBy';
-import { usePageRouter } from '@/hooks/usePageRouter';
+  chartHeightCustom,
+  chartWidthCustom,
+} from '@/utils/functions/chartWidth';
 import { filtersDataSend } from '@/utils/functions/filtersDataSend';
+import { maxWidthSize } from '@/utils/functions/maxWidthSize';
+
+import { SelectDropdown } from '../../SelectorComponents/SelectDrowdown/SelectDropdown';
 
 function PieGraph() {
   const datas = useSelector((state: RootState) => state.getOptions?.value);
   const { data: options_flat, isSuccess } = useGetOptionsQuery(datas);
   const { varName } = useSelector(
-    (state: RootState) => state.rangeSlider as FilterObjectsState
+    (state: RootState) => state.rangeSlider as FilterObjectsState,
   );
-  const { clusterNodeKeyVariable, clusterNodeValue } =
-    useSelector((state: RootState) => state.getNodeEdgesAggroutesMapData);
+  const { clusterNodeKeyVariable, clusterNodeValue } = useSelector(
+    (state: RootState) => state.getNodeEdgesAggroutesMapData,
+  );
 
   const { styleName } = useSelector(
-    (state: RootState) => state.getDataSetCollection
+    (state: RootState) => state.getDataSetCollection,
   );
   const { currentPage } = useSelector(
-    (state: RootState) => state.getScrollPage as CurrentPageInitialState
+    (state: RootState) => state.getScrollPage as CurrentPageInitialState,
   );
   const { inputSearchValue } = useSelector(
-    (state: RootState) => state.getCommonGlobalSearch
+    (state: RootState) => state.getCommonGlobalSearch,
   );
-  const { styleName: styleNameRoute } = usePageRouter();
-  const [optionFlat, setOptionsFlat] = useState<Options>({});
   const [width, height] = useWindowSize();
   const [pieGraphSelectedX, setSelectedX] = useState<PlotPIEX[]>([]);
   const [pieGraphSelectedY, setSelectedY] = useState<PlotPIEY[]>([]);
   const [plotX, setPlotX] = useState<any[]>([]);
   const [plotY, setPlotY] = useState<any[]>([]);
-  const [xAxes, setXAxes] = useState<string>(PIECHART_OPTIONS.x_vars[0].label);
-  const [yAxes, setYAxes] = useState<string>(PIECHART_OPTIONS.y_vars[0].label);
+  const { languageValue } = useSelector(
+    (state: RootState) => state.getLanguages,
+  );
+  const lang = languageValue as LanguageKey;
+  const [xAxes, setXAxes] = useState<string>(
+    PIECHART_OPTIONS.x_vars[0].label[lang],
+  );
+  const [yAxes, setYAxes] = useState<string>(
+    PIECHART_OPTIONS.y_vars[0].label[lang],
+  );
   const maxWidth = maxWidthSize(width);
   const { filtersObj } = useSelector((state: RootState) => state.getFilter);
   const [pieGraphOptions, setPieOptions] = useState<VoyagesOptionProps>({
-    x_vars: PIECHART_OPTIONS.x_vars[0].var_name,
-    y_vars: PIECHART_OPTIONS.y_vars[0].var_name,
+    x_vars: PIECHART_OPTIONS.x_vars[0].var_name || '',
+    y_vars: PIECHART_OPTIONS.y_vars[0].var_name || '',
+    agg_fn: PIECHART_OPTIONS.y_vars[0].agg_fn || '',
   });
-  const [aggregation, setAggregation] = useState<string>('sum');
+
   const VoyagepieGraphOptions = () => {
     Object.entries(PIECHART_OPTIONS).forEach(
       ([key, value]: [string, PlotPIEX[]]) => {
@@ -73,31 +84,62 @@ function PieGraph() {
         if (key === 'y_vars') {
           setSelectedY(value);
         }
-      }
+      },
     );
   };
-  const filters = filtersDataSend(filtersObj, styleNameRoute!, clusterNodeKeyVariable, clusterNodeValue)
-  const newFilters = filters !== undefined && filters!.map(filter => {
-    const { label, title, ...filteredFilter } = filter;
-    return filteredFilter;
-  });
-  const dataSend: IRootFilterObjectScatterRequest = {
-    groupby_by: pieGraphOptions.x_vars,
-    groupby_cols: [pieGraphOptions.y_vars],
-    agg_fn: aggregation,
-    cachename: 'voyage_bar_and_donut_charts',
-    filter: newFilters || [],
-  };
+
+  const filters = useMemo(
+    () =>
+      filtersDataSend(
+        filtersObj,
+        styleName!,
+        clusterNodeKeyVariable,
+        clusterNodeValue,
+      ),
+    [filtersObj, styleName, clusterNodeKeyVariable, clusterNodeValue],
+  );
+
+  const newFilters = useMemo(() => {
+    return filters?.map(({ ...rest }) => rest) || [];
+  }, [filters]);
+
+  const dataSend: IRootFilterObjectRequest = useMemo(() => {
+    return {
+      groupby: {
+        by: pieGraphOptions.x_vars,
+        vals: pieGraphOptions.y_vars,
+        agg_fn: pieGraphOptions.agg_fn,
+      },
+      filter: newFilters || [],
+    };
+  }, [
+    newFilters,
+    pieGraphOptions.agg_fn,
+    pieGraphOptions.x_vars,
+    pieGraphOptions.y_vars,
+  ]);
 
   if (inputSearchValue) {
     dataSend['global_search'] = inputSearchValue;
   }
 
-  const { data: response, isLoading: loading, isError } = useGroupBy(dataSend);
+  const {
+    data: response,
+    isLoading: loading,
+    isError,
+  } = useFetchPieCharts(dataSend);
+
+  const chartWidth = useMemo(
+    () => chartWidthCustom(width, maxWidth),
+    [width, maxWidth],
+  );
+  const chartHeight = useMemo(() => chartHeightCustom(height), [height]);
+
+  const showLegend = maxWidth >= 768;
 
   useEffect(() => {
     VoyagepieGraphOptions();
-    fetchOptionsFlat(isSuccess, options_flat as Options, setOptionsFlat);
+    fetchOptionsFlat(isSuccess, options_flat as Options);
     if (!loading && !isError && response) {
       const keys = Object.keys(response);
       if (keys[0]) {
@@ -118,19 +160,22 @@ function PieGraph() {
     options_flat,
     pieGraphOptions.x_vars,
     pieGraphOptions.y_vars,
-    aggregation,
     varName,
     currentPage,
     isSuccess,
-    styleName, fetchOptionsFlat
+    styleName,
+    lang,
   ]);
 
-  const handleChangeAggregation = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setAggregation(event.target.value);
-    },
-    []
-  );
+  useEffect(() => {
+    if (pieGraphSelectedX.length > 0 && pieGraphSelectedY.length > 0) {
+      setPieOptions({
+        x_vars: PIECHART_OPTIONS.x_vars[0].var_name,
+        y_vars: PIECHART_OPTIONS.y_vars[0].var_name,
+        agg_fn: PIECHART_OPTIONS.y_vars[0].agg_fn,
+      });
+    }
+  }, [pieGraphSelectedX, pieGraphSelectedY]);
 
   const handleChangeSingleSelect = useMemo(() => {
     return (event: SelectChangeEvent<string>, name: string) => {
@@ -140,7 +185,7 @@ function PieGraph() {
         [name]: value,
       }));
     };
-  }, [pieGraphOptions]);
+  }, []);
 
   const isPlotYZeroAll = plotY.every((item) => item === 0);
 
@@ -157,20 +202,26 @@ function PieGraph() {
         YFieldText={'Values'}
         setXAxes={setXAxes}
         setYAxesPie={setYAxes}
-        aggregation={aggregation}
-      />
-      <RadioSelected
-        handleChange={handleChangeAggregation}
-        aggregation={aggregation}
       />
       {loading ? (
         <div className="loading-logo-display">
-          <img src={LOADINGLOGO} />
+          <img src={LOADINGLOGO} alt="loading" />
         </div>
       ) : plotX.length > 0 && !isPlotYZeroAll ? (
-        <Grid style={{ maxWidth: maxWidth, border: '1px solid #ccc' }}>
+        <div
+          style={{
+            width: '100%',
+            maxWidth: chartWidth,
+            height: chartHeight,
+            minHeight: 500,
+            border: '1px solid #ccc',
+            marginTop: 18,
+            overflow: 'auto',
+            position: 'relative',
+          }}
+        >
           <Plot
-            className='pie-plot-container'
+            className="pie-plot-container"
             data={[
               {
                 labels: plotX,
@@ -179,30 +230,47 @@ function PieGraph() {
                 mode: 'lines+markers',
                 textinfo: 'label+percent',
                 insidetextorientation: 'radial',
+                outsidetextfont: {
+                  size: 14,
+                  color: '#333',
+                  family: 'Arial, sans-serif',
+                },
                 hole: 0.1,
                 textposition: 'inside',
-                showlegend: maxWidth < 420 ? false : true,
+                showlegend: showLegend,
               },
             ]}
             layout={{
-              width: getMobileMaxWidth(maxWidth - 5),
-              height: getMobileMaxHeight(height),
-              title: `The ${aggregation} of ${xAxes || ''
-                } vs <br> ${yAxes || ''
-                } Pie Chart`,
+              width: chartWidth,
+              height: chartHeight,
+              title: {
+                text: `The ${xAxes || ''} vs <br>${yAxes || ''} Pie Chart`,
+                x: 0.5,
+                xanchor: 'center',
+              },
               font: {
                 family: 'Arial, sans-serif',
-                size: maxWidth < 500 ? 8 : 12,
+                size: maxWidth < 500 ? 10 : 14,
                 color: '#333333',
-              }
+              },
+              autosize: true,
+              legend: {
+                orientation: showLegend ? 'v' : 'h',
+                x: showLegend ? 1.02 : 0.5,
+                y: showLegend ? 0.5 : -0.1,
+                xanchor: showLegend ? 'left' : 'center',
+                yanchor: showLegend ? 'middle' : 'top',
+              },
             }}
-            config={{ responsive: true }}
+            config={{
+              responsive: true,
+              displayModeBar: false,
+            }}
           />
-        </Grid>
+        </div>
       ) : (
         <div className="no-data-icon">
-          <div>No Result</div>
-          <img src={NODATA} />
+          <NoDataState text="" />
         </div>
       )}
     </div>

@@ -1,16 +1,36 @@
 import { usePageRouter } from '@/hooks/usePageRouter';
-import { ESTIMATES } from '@/share/CONST_DATA';
+import {
+  ESTIMATES,
+  TRANSATLANTIC,
+  INTRAAMERICAN,
+  ALLVOYAGES,
+} from '@/share/CONST_DATA';
 import '@/style/map.scss';
 
 const ShowsColoredNodeOnMap = () => {
-  const { styleName } = usePageRouter()
+  const { styleName } = usePageRouter();
+
+  let classNameMap = 'leaflet-bottom';
+  if (styleName === ESTIMATES) {
+    classNameMap = 'leaflet-bottom-voyages';
+  } else if (
+    styleName === TRANSATLANTIC ||
+    styleName === INTRAAMERICAN ||
+    styleName === ALLVOYAGES
+  ) {
+    classNameMap = 'leaflet-bottom-voyages';
+  } else {
+    classNameMap = 'leaflet-bottom';
+  }
 
   return (
-    <div className="leaflet-bottom leaflet-left __web-inspector-hide-shortcut__">
+    <div
+      className={`${classNameMap} leaflet-left __web-inspector-hide-shortcut__`}
+    >
       <div className="legend leaflet-control">
         <table className="legendtable">
           <tbody>
-            {styleName !== ESTIMATES &&
+            {styleName !== ESTIMATES && (
               <tr>
                 <td>
                   <div className="circle origins"></div>
@@ -25,10 +45,11 @@ const ShowsColoredNodeOnMap = () => {
                     title=""
                     data-original-title="Origins are derived from user contributions."
                   >
-                    IMP
+                    (IMP)
                   </span>
                 </td>
-              </tr>}
+              </tr>
+            )}
             <tr>
               <td>
                 <div className="circle embarkations"></div>
@@ -36,14 +57,15 @@ const ShowsColoredNodeOnMap = () => {
               <td> </td>
               <td>Embarkations</td>
             </tr>
-            {styleName !== ESTIMATES &&
+            {styleName !== ESTIMATES && (
               <tr>
                 <td>
                   <div className="circle embark-disembark"></div>
                 </td>
                 <td> </td>
                 <td>Embark &amp; Disembark</td>
-              </tr>}
+              </tr>
+            )}
             <tr>
               <td>
                 <div className="circle disembarkations"></div>
@@ -51,14 +73,15 @@ const ShowsColoredNodeOnMap = () => {
               <td> </td>
               <td>Disembarkations</td>
             </tr>
-            {styleName !== ESTIMATES &&
+            {styleName !== ESTIMATES && (
               <tr>
                 <td>
                   <div className="circle  post-disembark-location"></div>
                 </td>
                 <td> </td>
                 <td>Post-Disembark Locations</td>
-              </tr>}
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

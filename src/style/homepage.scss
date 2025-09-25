@@ -3,57 +3,106 @@
     @media only screen and (max-width: 374px) {
       @content;
     }
-  }
-
-  @else if $size==1 {
+  } @else if $size==1 {
     @media only screen and (min-width: 375px) and (max-width: 425px) {
       @content;
     }
-  }
-
-  @else if $size==1.1 {
+  } @else if $size==1.1 {
     @media only screen and (min-width: 425px) and (max-width: 479px) {
       @content;
     }
-  }
-
-  @else if $size==2 {
+  } @else if $size==2 {
     @media only screen and (min-width: 480px) and (max-width: 575px) {
       @content;
     }
-  }
-
-  @else if $size==3 {
+  } @else if $size==3 {
     @media only screen and (min-width: 576px) and (max-width: 767px) {
       @content;
     }
-  }
-
-  @else if $size==4 {
+  } @else if $size==4 {
     @media only screen and (min-width: 768px) and (max-width: 991px) {
       @content;
     }
-  }
-
-  @else if $size==5 {
+  } @else if $size==5 {
     @media only screen and (min-width: 992px) and (max-width: 1024px) {
       @content;
     }
-  }
-
-  @else if $size==6 {
+  } @else if $size==6 {
     @media only screen and (min-width: 1025px) and (max-width: 1366px) {
       @content;
     }
-  }
-
-  @else if $size==7 {
+  } @else if $size==7 {
     @media only screen and (max-width: 1440px) {
       @content;
     }
   }
 }
+@media (min-width: 768px) {
+  .mobile-filter-container {
+    display: none !important;
+  }
+  .filter-menu-bar {
+    display: flex !important;
+  }
+}
 
+@media (max-width: 770px) {
+  .mobile-filter-container {
+    display: flex !important;
+  }
+  .filter-menu-bar {
+    display: none !important;
+  }
+}
+
+/* Mobile dropdown specific styles */
+.mobile-filter-overlay .ant-dropdown-menu {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+  border: none;
+}
+
+.mobile-filter-overlay .ant-dropdown-menu-item {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #333333;
+  border-bottom: 1px solid #f0f0f0;
+  margin: 0;
+  border-radius: 0;
+}
+
+.mobile-filter-overlay .ant-dropdown-menu-item:last-child {
+  border-bottom: none;
+}
+
+.mobile-filter-overlay .ant-dropdown-menu-item:hover {
+  background-color: #f5f5f5;
+}
+.ant-dropdown-menu-submenu-popup {
+  z-index: 10002 !important;
+}
+
+.ant-dropdown-menu-submenu-popup .ant-dropdown-menu {
+  z-index: 10002 !important;
+}
+
+.mobile-filter-overlay .ant-dropdown-menu-submenu-title {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #333333;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.mobile-filter-overlay .ant-dropdown-menu-submenu-arrow {
+  right: 16px;
+}
+
+/* Ensure mobile dropdown appears above other elements */
+.mobile-filter-overlay {
+  z-index: 9999;
+}
 .video-background {
   position: absolute;
   top: 0;
@@ -146,7 +195,7 @@
   }
 
   @include breakpoint-standard(4) {
-    padding: 10rem 5rem 1rem 5rem
+    padding: 10rem 5rem 1rem 5rem;
   }
 
   @include breakpoint-standard(3) {
@@ -226,7 +275,7 @@
   color: #ffffff;
   font-style: italic;
   font-weight: 400;
-  // margin-top: 5px;  
+  // margin-top: 5px;
   margin-bottom: 15px;
   font-size: 22px;
   text-shadow: 1px 1px 1px #000;
@@ -494,7 +543,6 @@
 
   @include breakpoint-standard(0) {
     font-size: 10px;
-
   }
 }
 
@@ -535,8 +583,6 @@
 .place-page-box {
   cursor: pointer;
 
-
-
   @include breakpoint-standard(4) {
     img {
       width: 75%;
@@ -552,6 +598,78 @@
   @include breakpoint-standard(0) {
     img {
       width: 60%;
+    }
+  }
+}
+
+.place-page-box-timelapse {
+  cursor: pointer;
+  --image-size: 107px;
+
+  img {
+    width: var(--image-size);
+    height: var(--image-size);
+    border-radius: 50%;
+    margin: 5px 0px 10px 0;
+    opacity: 0.65;
+    object-fit: cover;
+    object-position: center;
+    transition: opacity 0.3s ease;
+    
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  @include breakpoint-standard(6) {
+    --image-size: 110px;
+  }
+
+  @include breakpoint-standard(5) {
+    --image-size: 110px;
+    
+    img {
+      margin: 5px 0px 5px 0;
+    }
+  }
+
+  @include breakpoint-standard(4) {
+    --image-size: 90px;
+    
+    img {
+      margin: 5px 0 5px 0;
+    }
+  }
+
+  @include breakpoint-standard(3) {
+    --image-size: 80px;
+    
+    img {
+      margin: 5px 0 5px 0;
+    }
+  }
+
+  @include breakpoint-standard(2) {
+    --image-size: 70px;
+    
+    img {
+      margin: 5px 0 5px 0;
+    }
+  }
+
+  @include breakpoint-standard(1) {
+    --image-size: 65px;
+    
+    img {
+      margin: 5px 0 5px 0;
+    }
+  }
+
+  @include breakpoint-standard(0) {
+    --image-size: 60px;
+    
+    img {
+      margin: 5px 0 5px 0;
     }
   }
 }
@@ -618,7 +736,6 @@
 
   @include breakpoint-standard(0) {
     width: 140px;
-
   }
 }
 
@@ -626,8 +743,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-
 }
 
 .btn-navbar-reset-all {
@@ -635,9 +750,10 @@
   cursor: pointer;
   border: 1px white solid;
   border-radius: 3px;
-  color: white;
-  padding: 0 0.5rem 0 0.35rem;
+  color: white !important;
+  padding: 0.25rem;
   font-size: 0.85rem;
+  background: transparent;
 
   span {
     margin-left: 4px;
@@ -647,19 +763,27 @@
 .btn-navbar-hide {
   margin-left: 15px;
   cursor: pointer;
-  border: 1px white solid;
   border-radius: 3px;
   color: white;
   text-align: center;
-  padding: 0 0.5rem 0 0.35rem;
+  padding: 3px;
   font-size: 0.85rem;
-  width: 80px;
+  width: 70px;
+  background: transparent;
+  border: 1px white solid;
 
   span {
     margin-left: 4px;
   }
 }
-
+.btn-close-filter{
+  margin-left: 15px;
+  cursor: pointer;
+  border: none;
+  color: white !important;
+  font-size: 0.90rem;
+  background: transparent;
+}
 .reset-filter {
   display: flex;
   align-items: center;
@@ -698,7 +822,7 @@
     box-shadow: 1px 2px 8px var(--btn-global-shadow--, rgb(11 196 181));
     background-color: var(--btn-global-search--, rgb(0, 114, 105));
 
-    >svg {
+    > svg {
       font-size: 16px;
     }
   }
@@ -711,8 +835,6 @@
   align-items: center;
   height: 45vh;
 }
-
-
 
 .backToTopBtn {
   display: flex;
@@ -736,7 +858,7 @@
   display: flex;
   justify-content: center;
   padding: 2.5rem 0 0;
-  background-color: #BBC2CB;
+  background-color: #bbc2cb;
 }
 
 .logo-grid {
@@ -756,43 +878,15 @@
 .card-img {
   width: 100%;
   border-radius: calc(0.25rem - 1px);
-
-  @include breakpoint-standard(5) {
-    width: 80%;
-  }
-
-  @include breakpoint-standard(4) {
-    width: 75%;
-  }
-
-  @include breakpoint-standard(3) {
-    width: 75%;
-  }
-
-  @include breakpoint-standard(2) {
-    width: 75%;
-  }
-
-  @include breakpoint-standard(1) {
-    width: 75%;
-  }
-
-  @include breakpoint-standard(0) {
-    width: 75%;
-
-  }
 }
 
 .logo-grid-container:last-child {
   padding: 2.5rem 0;
 }
 
-
-
 .footer-container {
   background-color: #5d7b8a;
 }
-
 
 .footer-flex-container {
   display: flex;
@@ -800,7 +894,6 @@
   flex-wrap: wrap;
   padding: 0 4rem;
   color: #efefef;
-
 }
 
 .footer-copyrights {
@@ -870,7 +963,7 @@
   height: 45vh;
   background: transparent;
 
-  >img {
+  > img {
     width: 10%;
 
     @include breakpoint-standard(5) {
@@ -890,7 +983,7 @@
 .pie-plot-container {
   .pielayer {
     .slicetext {
-      >text {
+      > text {
         font-size: 0.85rem !important;
 
         @include breakpoint-standard(5) {
@@ -909,7 +1002,7 @@
   }
 }
 
-.enlavers-role-radio {
+.enslavers-role-radio {
   display: flex;
   justify-self: start;
   align-items: center;

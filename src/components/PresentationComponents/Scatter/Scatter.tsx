@@ -1,64 +1,73 @@
-import { useState, useEffect, ChangeEvent, useCallback } from 'react';
-import Plot from 'react-plotly.js';
-import { Data } from 'plotly.js';
-import VOYAGE_SCATTER_OPTIONS from '@/utils/flatfiles/VOYAGE_SCATTER_OPTIONS.json';
-import { Grid, SelectChangeEvent } from '@mui/material';
-import LOADINGLOGO from '@/assets/sv-logo_v2_notext.svg';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+
+import { SelectChangeEvent } from '@mui/material';
 import { useWindowSize } from '@react-hook/window-size';
-import { RootState } from '@/redux/store';
+import { Data } from 'plotly.js';
+import Plot from 'react-plotly.js';
 import { useSelector } from 'react-redux';
+
+import LOADINGLOGO from '@/assets/sv-logo_v2_notext.svg';
+import '@/style/page.scss';
+import NoDataState from '@/components/NoResultComponents/NoDataState';
 import { useGetOptionsQuery } from '@/fetch/voyagesFetch/fetchApiService';
+import { useFetchLineAndBarcharts } from '@/hooks/useFetchLineAndBarcharts';
+import { RootState } from '@/redux/store';
 import {
   PlotXYVar,
   VoyagesOptionProps,
   FilterObjectsState,
   CurrentPageInitialState,
-  IRootFilterObjectScatterRequest,
+  LanguageKey,
+  IRootFilterLineAndBarRequest,
 } from '@/share/InterfaceTypes';
-import '@/style/page.scss';
-import { SelectDropdown } from '../../SelectorComponents/SelectDrowdown/SelectDropdown';
-import { RadioSelected } from '../../SelectorComponents/RadioSelected/RadioSelected';
+import VOYAGE_SCATTER_OPTIONS from '@/utils/flatfiles/voyages/voyages_scatter_options.json';
 import {
-  getMobileMaxHeight,
-  getMobileMaxWidth,
-  maxWidthSize
-} from '@/utils/functions/maxWidthSize';
-import { useGroupBy } from '@/hooks/useGroupBy';
-import { formatYAxes } from '@/utils/functions/formatYAxesLine';
+  chartHeightCustom,
+  chartWidthCustom,
+} from '@/utils/functions/chartWidth';
 import { filtersDataSend } from '@/utils/functions/filtersDataSend';
-import { usePageRouter } from '@/hooks/usePageRouter';
+import { formatYAxes } from '@/utils/functions/formatYAxesLine';
+import { maxWidthSize } from '@/utils/functions/maxWidthSize';
+
+import { SelectDropdown } from '../../SelectorComponents/SelectDrowdown/SelectDropdown';
 
 function Scatter() {
-  const datas = useSelector((state: RootState | any) => state.getOptions?.value
-  );
+  const datas = useSelector((state: RootState) => state.getOptions?.value);
   const {
     data: options_flat,
     isSuccess,
     isLoading,
   } = useGetOptionsQuery(datas);
   const { varName } = useSelector(
-    (state: RootState) => state.rangeSlider as FilterObjectsState
+    (state: RootState) => state.rangeSlider as FilterObjectsState,
   );
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
   const { currentPage } = useSelector(
-    (state: RootState) => state.getScrollPage as CurrentPageInitialState
+    (state: RootState) => state.getScrollPage as CurrentPageInitialState,
   );
   const { filtersObj } = useSelector((state: RootState) => state.getFilter);
   const { styleName } = useSelector(
-    (state: RootState) => state.getDataSetCollection
+    (state: RootState) => state.getDataSetCollection,
   );
   const { inputSearchValue } = useSelector(
-    (state: RootState) => state.getCommonGlobalSearch
+    (state: RootState) => state.getCommonGlobalSearch,
   );
-  const { clusterNodeKeyVariable, clusterNodeValue } =
-    useSelector((state: RootState) => state.getNodeEdgesAggroutesMapData);
-
-  const { styleName: styleNameRoute } = usePageRouter();
+  const { clusterNodeKeyVariable, clusterNodeValue } = useSelector(
+    (state: RootState) => state.getNodeEdgesAggroutesMapData,
+  );
+  const { languageValue } = useSelector(
+    (state: RootState) => state.getLanguages,
+  );
+  const lang = languageValue as LanguageKey;
   const [width, height] = useWindowSize();
   const [scatterSelectedX, setSelectedX] = useState<PlotXYVar[]>([]);
   const [scatterSelectedY, setSelectedY] = useState<PlotXYVar[]>([]);
-  const [xAxes, setXAxes] = useState<string>(VOYAGE_SCATTER_OPTIONS.x_vars[0].label);
-  const [yAxes, setYAxes] = useState<string[]>([VOYAGE_SCATTER_OPTIONS.y_vars[0].label]);
+  const [xAxes, setXAxes] = useState<string>(
+    VOYAGE_SCATTER_OPTIONS.x_vars[0].label[lang],
+  );
+  const [yAxes, setYAxes] = useState<string[]>([
+    VOYAGE_SCATTER_OPTIONS.y_vars[0].label[lang],
+  ]);
   const [scatterData, setScatterData] = useState<Data[]>([]);
   const [chips, setChips] = useState<string[]>([
     VOYAGE_SCATTER_OPTIONS.y_vars[0].var_name,
@@ -66,10 +75,14 @@ function Scatter() {
   const [scatterOptions, setScatterOptions] = useState<VoyagesOptionProps>({
     x_vars: VOYAGE_SCATTER_OPTIONS.x_vars[0].var_name,
     y_vars: VOYAGE_SCATTER_OPTIONS.y_vars[0].var_name,
+    agg_fn: VOYAGE_SCATTER_OPTIONS.y_vars[0].agg_fn || '',
   });
-
-  const [aggregation, setAggregation] = useState<string>('sum');
   const maxWidth = maxWidthSize(width);
+  const chartWidth = useMemo(
+    () => chartWidthCustom(width, maxWidth),
+    [width, maxWidth],
+  );
+  const chartHeight = useMemo(() => chartHeightCustom(height), [height]);
 
   const VoyageScatterOptions = useCallback(() => {
     Object.entries(VOYAGE_SCATTER_OPTIONS).forEach(
@@ -80,26 +93,53 @@ function Scatter() {
         if (key === 'y_vars') {
           setSelectedY(value);
         }
-      }
+      },
     );
   }, []);
 
-  const filters = filtersDataSend(filtersObj, styleNameRoute!, clusterNodeKeyVariable, clusterNodeValue)
-  const newFilters = filters !== undefined && filters!.map(filter => {
-    const { label, title, ...filteredFilter } = filter;
-    return filteredFilter;
-  });
-  const dataSend: IRootFilterObjectScatterRequest = {
-    groupby_by: scatterOptions.x_vars,
-    groupby_cols: [...chips],
-    agg_fn: aggregation,
-    cachename: 'voyage_xyscatter',
-    filter: newFilters || [],
-  };
+  // Memoized values
+  const filters = useMemo(
+    () =>
+      filtersDataSend(
+        filtersObj,
+        styleName!,
+        clusterNodeKeyVariable,
+        clusterNodeValue,
+      ),
+    [filtersObj, styleName, clusterNodeKeyVariable, clusterNodeValue],
+  );
+
+  const newFilters = useMemo(() => {
+    return filters?.map(({ ...rest }) => rest) || [];
+  }, [filters]);
+
+  const dataSend: IRootFilterLineAndBarRequest = useMemo(() => {
+    return {
+      groupby: {
+        by: scatterOptions.x_vars,
+        agg_series: chips.map((chip) => {
+          const yVar = VOYAGE_SCATTER_OPTIONS.y_vars.find(
+            (y) => y.var_name === chip,
+          );
+          return {
+            vals: chip,
+            agg_fn: yVar?.agg_fn || 'sum',
+          };
+        }),
+      },
+      filter: newFilters || [],
+    };
+  }, [chips, newFilters, scatterOptions.x_vars]);
+
   if (inputSearchValue) {
-    dataSend['global_search'] = inputSearchValue
+    dataSend['global_search'] = inputSearchValue;
   }
-  const { data: response, isLoading: loading, isError } = useGroupBy(dataSend);
+
+  const {
+    data: response,
+    isLoading: loading,
+    isError,
+  } = useFetchLineAndBarcharts(dataSend);
 
   useEffect(() => {
     VoyageScatterOptions();
@@ -114,7 +154,7 @@ function Scatter() {
             type: 'scatter',
             mode: 'lines',
             line: { shape: 'spline' },
-            name: `${VOYAGE_SCATTER_OPTIONS.y_vars[index].label}`,
+            name: `${VOYAGE_SCATTER_OPTIONS.y_vars[index].label[lang]}`,
           });
         }
       }
@@ -130,21 +170,14 @@ function Scatter() {
     options_flat,
     scatterOptions.x_vars,
     scatterOptions.y_vars,
-    aggregation,
     varName,
     chips,
     currentPage,
     isSuccess,
     styleName,
-    VoyageScatterOptions, styleNameRoute,
+    VoyageScatterOptions,
+    lang,
   ]);
-
-  const handleChangeAggregation = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setAggregation(event.target.value);
-    },
-    []
-  );
 
   const handleChangeScatterOption = useCallback(
     (event: SelectChangeEvent<string>, name: string) => {
@@ -154,33 +187,39 @@ function Scatter() {
         [name]: value,
       }));
       for (const title of scatterSelectedX) {
-        setXAxes(title.label);
+        setXAxes(title.label[lang]);
       }
     },
-    []
+    [scatterSelectedX, lang],
   );
 
   const handleChangeScatterChipYSelected = useCallback(
     (event: SelectChangeEvent<string[]>, name: string) => {
       const value = event.target.value;
       if (value.length === 0) {
-        setError(true)
+        setError(true);
       } else {
-        setError(false)
+        setError(false);
       }
       setChips(typeof value === 'string' ? value.split(',') : value);
       setScatterOptions((prevOptions) => ({
         ...prevOptions,
         [name]: value,
       }));
-      const newYAxesTitles = scatterSelectedY.map((title) => title.label);
+      const newYAxesTitles = scatterSelectedY.map((title) => title.label[lang]);
       setYAxes(newYAxesTitles);
     },
-    []
+    [lang, scatterSelectedY],
   );
 
   return (
-    <div className="mobile-responsive">
+    <div
+      className="mobile-responsive"
+      style={{
+        height: '100vh',
+        overflowY: 'auto',
+      }}
+    >
       <SelectDropdown
         selectedX={scatterSelectedX}
         selectedY={scatterSelectedY}
@@ -190,49 +229,71 @@ function Scatter() {
         handleChangeMultipleYSelected={handleChangeScatterChipYSelected}
         maxWidth={maxWidth}
         XFieldText="X Field"
-        YFieldText="Multi-Selector Y-Feild"
+        YFieldText="Multi-Selector Y-Field"
         setXAxes={setXAxes}
         setYAxes={setYAxes}
         error={error}
-        aggregation={aggregation}
       />
-      <RadioSelected
-        handleChange={handleChangeAggregation}
-        aggregation={aggregation}
-      />
-      {isLoading || yAxes.length === 0 ? (<div className="loading-logo-graph">
-        <img src={LOADINGLOGO} />
-      </div>) : (<Grid style={{ maxWidth: maxWidth, border: '1px solid #ccc' }}>
-        <Plot
-          data={scatterData}
-          layout={{
-            width: getMobileMaxWidth(maxWidth - 5),
-            height: getMobileMaxHeight(height),
-            title: 'Line Graph',
-            font: {
-              family: 'Arial, sans-serif',
-              size: maxWidth < 400 ? 7 : 10,
-              color: '#333333',
-            },
-            xaxis: {
-              title: {
-                text: xAxes || scatterSelectedX[0]?.label
-              },
-              fixedrange: true,
-            },
-            yaxis: {
-              title: {
-                text: Array.isArray(yAxes) ? formatYAxes(yAxes) : yAxes
-              },
-              fixedrange: true,
-            },
-          }}
-          config={{ responsive: true }}
-        />
-      </Grid>)}
-    </div>
-  )
 
+      {isLoading ? (
+        <div className="loading-logo-graph">
+          <img src={LOADINGLOGO} alt="loading" />
+        </div>
+      ) : yAxes.length > 0 ? (
+        <div
+          style={{
+            width: '100%',
+            maxWidth: chartWidth,
+            height: chartHeight,
+            minHeight: 500,
+            border: '1px solid #ccc',
+            marginTop: 18,
+            overflow: 'auto',
+            position: 'relative',
+          }}
+        >
+          <Plot
+            data={scatterData}
+            layout={{
+              width: chartWidth,
+              height: chartHeight,
+              title: {
+                text: 'Line Graph',
+                x: 0.5,
+                xanchor: 'center',
+              },
+              font: {
+                family: 'Arial, sans-serif',
+                size: width < 400 ? 8 : width < 768 ? 10 : 12,
+                color: '#333333',
+              },
+              xaxis: {
+                title: {
+                  text: xAxes || scatterSelectedX[0]?.label[lang],
+                },
+                fixedrange: true,
+              },
+              yaxis: {
+                title: {
+                  text: Array.isArray(yAxes) ? formatYAxes(yAxes) : yAxes,
+                },
+                fixedrange: true,
+              },
+              showlegend: false,
+            }}
+            config={{
+              responsive: true,
+              displayModeBar: false,
+            }}
+          />
+        </div>
+      ) : (
+        <div className="no-data-icon">
+          <NoDataState text="" />
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default Scatter;
