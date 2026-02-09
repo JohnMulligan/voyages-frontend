@@ -22,18 +22,16 @@ To run this application locally, you'll need to have Node.js installed on your m
 
 After cloning the repository, navigate to the project directory and install the dependencies.
 
-To instantiate the project, use npm ci, which relies on the ```package-lock.json``` file. Then, force the installation of mirador using ```npm install```, but without saving it to package.json by using the ```--no-save``` flag. (mirador has an unresolved bug)
+To instantiate the project, use npm ci, which relies on the ```package-lock.json``` file.
 
-	npm ci \                                 
-	&& npm i --force mirador@"^3.3.0" --no-save \
+	npm ci \
 	&& npm run build \
 
 However, if you change your version of node, or install a new package in the course of development, you will need to update your package files. In that case, you will need to remove:
 
 	rm -rf node_modules \
 	npm i \
-	npm ci \                                 
-	&& npm i --force mirador@"^3.3.0" --no-save \
+	npm ci \
 	&& npm run build \
 
 Please only follow this procedure if absolutely necessary: if a package needs updating, node needs an upgrade, or a new package is required for your development work on the project.
