@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // @/fetch/contributeFetch/submitReview.ts
-import { Review } from '@dotproductdev/voyages-contribute';
+import { Review } from '@slavevoyages/voyages-contribute';
 import axios, { AxiosResponse } from 'axios';
 
 import { AUTHTOKEN, BASEURLNODE } from '@/share/AUTH_BASEURL';

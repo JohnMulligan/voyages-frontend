@@ -5,7 +5,7 @@ import {
   TableChange,
   MaterializedEntity,
   TableProperty,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import { EntityPropertyChangeCommentBox } from './EntityPropertyChangeCommentBox';
 import '@/style/numberTable.scss';
 

@@ -17,7 +17,7 @@ import {
   PropertyAccessLevel,
   Review,
   Contribution,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import { AgGridReact } from 'ag-grid-react';
 import {
   Button,

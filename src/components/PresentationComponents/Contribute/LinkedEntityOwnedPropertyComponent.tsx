@@ -9,7 +9,7 @@ import {
   materializeNew,
   LinkedEntityProperty,
   getSchema,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import { Button } from '@mui/material';
 
 import { EntityForm, EntityFormProps } from './EntityForm';

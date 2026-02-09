@@ -4,3 +4,6 @@ VITE_API_BASE_NODE_URL = 'http://localhost:8080'
 HOST='0.0.0.0'
 POST='3000'
 VITE_IIIF_MANIFESTS_BASEURL='https://location.of.iiifmanifests/withtrailingslash/'
+# Supabase Configuration
+VITE_SUPABASE_URL=https://12345.co
+VITE_SUPABASE_ANON_KEY=abcdefg

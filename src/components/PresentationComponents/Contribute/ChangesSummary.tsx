@@ -11,7 +11,7 @@ import {
   Contribution,
   EntityChange,
   MaterializedEntity,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import { Preview } from '@mui/icons-material';
 import { Button, Typography, Timeline, Space, Tabs } from 'antd';
 import type { TabsProps } from 'antd';

@@ -1,5 +1,5 @@
 // Contribute/BatchComponent/utils/batchApi.ts
-import { PublicationBatch } from '@dotproductdev/voyages-contribute';
+import { PublicationBatch } from '@slavevoyages/voyages-contribute';
 
 import { BASEURLNODE } from '@/share/AUTH_BASEURL';
 

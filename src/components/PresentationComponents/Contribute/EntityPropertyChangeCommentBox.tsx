@@ -1,4 +1,4 @@
-import { Property } from '@dotproductdev/voyages-contribute';
+import { Property } from '@slavevoyages/voyages-contribute';
 import { Comment } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';

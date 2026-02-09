@@ -13,7 +13,7 @@ import {
   MaterializedEntity,
   Contribution,
   getSchema,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import { Button } from '@mui/material';
 import { AgGridReact } from 'ag-grid-react';
 import { Form, Pagination, message, Spin } from 'antd';

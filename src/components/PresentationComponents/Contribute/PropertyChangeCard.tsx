@@ -5,7 +5,7 @@ import {
   LinkedEntitySelectionChange,
   MaterializedEntity,
   PropertyChange,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 
 import PropertyChangesTable from './PropertyChangesTable';
 import '@/style/contributeContent.scss';

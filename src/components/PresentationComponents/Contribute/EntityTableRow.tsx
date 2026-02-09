@@ -11,7 +11,7 @@ import {
   OwnedEntityListChange,
   PropertyChange,
   OwnedEntityListProperty,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import { Box, IconButton, TableCell, TableRow, Collapse } from '@mui/material';
 import React, { useCallback, useMemo } from 'react';
 import { Delete, Restore } from '@mui/icons-material';

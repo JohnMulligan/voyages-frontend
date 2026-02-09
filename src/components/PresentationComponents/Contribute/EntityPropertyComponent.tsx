@@ -8,7 +8,7 @@ import {
   areMatch,
   Property,
   EntityUpdate,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import { Button } from '@mui/material';
 
 import { DirectEntityPropertyField } from './DirectEntityPropertyField';

@@ -11,7 +11,7 @@ import {
   OwnedEntityListChange,
   OwnedEntityListProperty,
   cloneEntity,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import { Add } from '@mui/icons-material';
 import {
   IconButton,

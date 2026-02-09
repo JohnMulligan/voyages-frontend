@@ -2,7 +2,7 @@
 import React, { FunctionComponent, useState } from 'react';
 
 import { PlusOutlined, FileTextOutlined } from '@ant-design/icons';
-import { PublicationBatch } from '@dotproductdev/voyages-contribute';
+import { PublicationBatch } from '@slavevoyages/voyages-contribute';
 import {
   Button as MuiButton,
   Select,

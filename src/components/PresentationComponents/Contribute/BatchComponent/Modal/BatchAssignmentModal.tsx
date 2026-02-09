@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-import { PublicationBatch } from '@dotproductdev/voyages-contribute';
+import { PublicationBatch } from '@slavevoyages/voyages-contribute';
 import { Close } from '@mui/icons-material';
 import {
   Dialog,

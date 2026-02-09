@@ -6,7 +6,7 @@ import {
   isMaterializedEntity,
   isMaterializedEntityArray,
   MaterializedEntity,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import { useState } from 'react';
 
 export interface EntityViewProps {

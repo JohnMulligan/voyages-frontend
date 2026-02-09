@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { PublicationBatch } from '@dotproductdev/voyages-contribute';
+import { PublicationBatch } from '@slavevoyages/voyages-contribute';
 import { Close, Warning } from '@mui/icons-material';
 import {
   Dialog,

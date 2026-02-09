@@ -23,7 +23,7 @@ import {
   Review,
   Contribution,
   EntityUpdate,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import {
   CollapseProps,
   Form,

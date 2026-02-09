@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {  Checkbox, FormControlLabel } from '@mui/material';
-import { MaterializedEntity } from "@dotproductdev/voyages-contribute";
+import { MaterializedEntity } from "@slavevoyages/voyages-contribute";
 import { EntityView } from "../EntityView";
 
 interface PreviewEntityProps {

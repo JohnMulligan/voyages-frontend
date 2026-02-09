@@ -1,4 +1,4 @@
-import { MaterializedEntity } from '@dotproductdev/voyages-contribute';
+import { MaterializedEntity } from '@slavevoyages/voyages-contribute';
 import { Close } from '@mui/icons-material';
 import { Dialog, DialogTitle, DialogContent, IconButton } from '@mui/material';
 

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { PublicationBatch } from '@dotproductdev/voyages-contribute';
+import { PublicationBatch } from '@slavevoyages/voyages-contribute';
 import { Typography, Box, Alert, Autocomplete, TextField } from '@mui/material';
 interface SelectSearchDropdownListProps {
   selectedBatch: PublicationBatch | null;

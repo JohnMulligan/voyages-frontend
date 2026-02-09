@@ -5,7 +5,7 @@ import {
   EntityLinkEditMode,
   LinkedEntityProperty,
   getSchema,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import { Alert, Select, Spin, Tooltip } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { EntityFormProps } from './EntityForm';

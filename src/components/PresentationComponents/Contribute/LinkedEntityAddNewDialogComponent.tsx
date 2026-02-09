@@ -8,7 +8,7 @@ import {
   applyUpdate,
   cloneEntity,
   expandMaterialized,
-} from '@dotproductdev/voyages-contribute';
+} from '@slavevoyages/voyages-contribute';
 import {
   Button,
   Stack,

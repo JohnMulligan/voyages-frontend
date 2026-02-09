@@ -1,4 +1,4 @@
-import { Contribution } from '@dotproductdev/voyages-contribute';
+import { Contribution } from '@slavevoyages/voyages-contribute';
 import axios, { isAxiosError } from 'axios';
 
 import { BASEURLNODE } from '@/share/AUTH_BASEURL';

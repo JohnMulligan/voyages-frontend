@@ -1,4 +1,4 @@
-import { ContributionStatus } from '@dotproductdev/voyages-contribute';
+import { ContributionStatus } from '@slavevoyages/voyages-contribute';
 import axios from 'axios';
 
 import { BASEURLNODE } from '@/share/AUTH_BASEURL';
