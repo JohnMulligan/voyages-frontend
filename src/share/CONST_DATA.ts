@@ -95,6 +95,8 @@ export const maxRadiusInPixels = 20;
 export const maxRadiusInPixelsNode = 15;
 export const minEdgeInPixels = 3;
 export const maxEdgeInPixels = 10;
+export const EDGES_MAIN_PANE = 'edgesMain';
+export const EDGES_ANIMATED_PANE = 'edgesAnimated';
 
 export const nodeTypeOrigin = 'origin';
 export const nodeTypePostDisembarkation = 'postDisembarkation';
