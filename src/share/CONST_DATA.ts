@@ -1,7 +1,7 @@
 export const VOYAGETILE = 'Voyages';
 export const POPELETILET = 'People Database';
 export const EnslavedTitle = 'Enslaved';
-export const EnslaversTitle = 'Enslavers';
+export const EnslaversTitle = 'Slave Traders';
 export const TRANSATLANTICTABLEFILE = 'voyages_transatlantic_table.json';
 export const INTRAAMERICANTABLEFILE = 'voyages_intraamerican_table.json';
 export const ALLVOYAGESTABLEFILE = 'voyages_all_table.json';
